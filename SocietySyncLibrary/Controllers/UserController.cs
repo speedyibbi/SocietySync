@@ -57,23 +57,27 @@ public class UserController
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         const string sql = "SELECT * FROM Users";
-
+        
         return _connection.Query<User>(sql);
     }
 
     public static bool Update(User user, bool rehash = false)
     {
+        string? hash = rehash ? HashPassword(user.PasswordHash!) : user.PasswordHash;
+
         const string sql = "UPDATE Users SET email = @email, password_hash = @passwordHash, first_name = @firstName, last_name = @lastName, phone_number = @phoneNumber WHERE user_id = @userId";
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@userId", user.UserID);
         parameters.Add("@email", user.Email);
-        parameters.Add("@passwordHash", rehash ? HashPassword(user.PasswordHash!) : user.PasswordHash);
+        parameters.Add("@passwordHash", hash);
         parameters.Add("@firstName", user.FirstName);
         parameters.Add("@lastName", user.LastName);
         parameters.Add("@phoneNumber", user.PhoneNumber, DbType.String);
 
         int rowsAffected = _connection.Execute(sql, parameters);
 
+        user.PasswordHash = hash;
+        
         return rowsAffected > 0;
     }
 
@@ -84,14 +88,14 @@ public class UserController
         parameters.Add("@userId", userId);
 
         int rowsAffected = _connection.Execute(sql, parameters);
-
+        
         return rowsAffected > 0;
     }
 
     private static string HashPassword(string password)
     {
         string salt = BC.GenerateSalt(12);
-
+        
         return BC.HashPassword(password, salt);
     }
 

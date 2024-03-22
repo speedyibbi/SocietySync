@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Net.Sockets;
 using Dapper;
 
 namespace SocietySyncLibrary;
@@ -56,7 +55,7 @@ public class SocietyController
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         const string sql = "SELECT * FROM Societies";
-
+        
         return _connection.Query<Society>(sql);
     }
 
@@ -71,7 +70,7 @@ public class SocietyController
         parameters.Add("@createdAt", society.CreatedAt);
 
         int rowsAffected = _connection.Execute(sql, parameters);
-
+        
         return rowsAffected > 0;
     }
 
@@ -84,5 +83,40 @@ public class SocietyController
         int rowsAffected = _connection.Execute(sql, parameters);
 
         return rowsAffected > 0;
+    }
+
+    public static bool SeedSocieties()
+    {
+        try
+        {
+            const string insertSql = "INSERT INTO Societies (name, description, president, created_at) VALUES (@name, @description, null, @createdAt)";
+
+            List<Society> societies = new List<Society>()
+            {
+              new Society { Name = "Programming Society", Description = "A society for students interested in programming." },
+              new Society { Name = "Art Society", Description = "A society for students interested in visual arts." },
+              new Society { Name = "Debating Society", Description = "A society for students interested in honing their debating skills." },
+              new Society { Name = "Music Society", Description = "A society for students interested in music and performance." },
+              new Society { Name = "Environmental Society", Description = "A society for students passionate about environmental issues." },
+              new Society { Name = "Film Society", Description = "A society for students interested in films and filmmaking." },
+              new Society { Name = "Gaming Society", Description = "A society for students interested in video games and esports." }
+            };
+
+            foreach (Society society in societies)
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@name", society.Name);
+                parameters.Add("@description", society.Description);
+                parameters.Add("@createdAt", DateTime.UtcNow);
+
+                _connection.Execute(insertSql, parameters);
+            }
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }
