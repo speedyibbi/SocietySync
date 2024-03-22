@@ -34,7 +34,7 @@ public class UserController
     {
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-        const string sql = "SELECT user_id, email, first_name, last_name, phone_number FROM Users WHERE user_id = @userId";
+        const string sql = "SELECT * FROM Users WHERE user_id = @userId";
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@userId", userId);
 
@@ -45,11 +45,20 @@ public class UserController
     {
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-        const string sql = "SELECT user_id, email, first_name, last_name, phone_number FROM Users WHERE email = @email";
+        const string sql = "SELECT * FROM Users WHERE email = @email";
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@email", email);
 
         return _connection.QuerySingleOrDefault<User>(sql, parameters);
+    }
+
+    public static IEnumerable<User> FindAll()
+    {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+        const string sql = "SELECT * FROM Users";
+
+        return _connection.Query<User>(sql);
     }
 
     public static bool Update(User user, bool rehash = false)

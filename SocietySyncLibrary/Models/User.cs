@@ -12,13 +12,13 @@ public class User
 
     [Column("password_hash")]
     public string PasswordHash { get; set; } = string.Empty;
-
+    
     [Column("first_name")]
     public string FirstName { get; set; } = string.Empty;
-
+    
     [Column("last_name")]
     public string LastName { get; set; } = string.Empty;
-
+    
     [Column("phone_number")]
-    public string PhoneNumber { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;   
 }
