@@ -117,4 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label6.Text" xml:space="preserve">
+    <value>here in grid, all society members will be displayed and president or 
+admin can approve or reject the members as option of reject will be shown in grid. 
+and this form will be available for each society .and this is just a note</value>
+  </data>
 </root>

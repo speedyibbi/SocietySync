@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace SocietySync
 {
-    public partial class Login : Form
+    public partial class Join_society : Form
     {
-        public Login()
+        public Join_society()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
