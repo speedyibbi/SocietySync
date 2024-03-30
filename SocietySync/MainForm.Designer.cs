@@ -134,6 +134,7 @@
             // HomeLabel
             // 
             HomeLabel.AutoSize = true;
+            HomeLabel.ForeColor = Color.DarkMagenta;
             HomeLabel.Location = new Point(48, 17);
             HomeLabel.Name = "HomeLabel";
             HomeLabel.Size = new Size(56, 23);
@@ -147,7 +148,6 @@
             HomeButtonBG.Name = "HomeButtonBG";
             HomeButtonBG.Size = new Size(230, 50);
             HomeButtonBG.TabIndex = 2;
-            
             // 
             // SocietiesButton
             // 
@@ -174,6 +174,7 @@
             // SocietiesLabel
             // 
             SocietiesLabel.AutoSize = true;
+            SocietiesLabel.ForeColor = Color.DarkMagenta;
             SocietiesLabel.Location = new Point(48, 17);
             SocietiesLabel.Name = "SocietiesLabel";
             SocietiesLabel.Size = new Size(82, 23);
@@ -214,6 +215,7 @@
             // SettingsLabel
             // 
             SettingsLabel.AutoSize = true;
+            SettingsLabel.ForeColor = Color.DarkMagenta;
             SettingsLabel.Location = new Point(48, 17);
             SettingsLabel.Name = "SettingsLabel";
             SettingsLabel.Size = new Size(74, 23);
@@ -242,6 +244,7 @@
             // 
             HomePanelLabel.AutoSize = true;
             HomePanelLabel.Font = new Font("Trebuchet MS", 28.2F, FontStyle.Bold, GraphicsUnit.Point);
+            HomePanelLabel.ForeColor = Color.DarkMagenta;
             HomePanelLabel.Location = new Point(100, 100);
             HomePanelLabel.Name = "HomePanelLabel";
             HomePanelLabel.Size = new Size(86, 71);
