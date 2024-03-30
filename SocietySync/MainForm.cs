@@ -112,7 +112,7 @@ namespace SocietySync
                     if (control is GroupBox society)
                     {
                         string societyTitle = (society.Controls[0] as Label)?.Text.ToLower() ?? "";
-                        
+
                         if (societyTitle.Contains(searchTerm))
                         {
                             society.Visible = true;
@@ -165,5 +165,7 @@ namespace SocietySync
                 activePanel = idx;
             }
         }
+
+        
     }
 }
