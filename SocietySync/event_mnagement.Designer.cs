@@ -93,7 +93,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(455, 300);
             panel1.TabIndex = 2;
-            panel1.Paint += this.panel1_Paint;
             // 
             // textBox4
             // 

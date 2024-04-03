@@ -74,11 +74,11 @@ public class SocietyController
         return rowsAffected > 0;
     }
 
-    public static bool Delete(int userId)
+    public static bool Delete(int societyId)
     {
-        const string sql = "DELETE FROM Users WHERE user_id = @userId";
+        const string sql = "DELETE FROM Societies WHERE society_id = @societyId";
         DynamicParameters parameters = new DynamicParameters();
-        parameters.Add("@userId", userId);
+        parameters.Add("@societyId", societyId);
 
         int rowsAffected = _connection.Execute(sql, parameters);
 
