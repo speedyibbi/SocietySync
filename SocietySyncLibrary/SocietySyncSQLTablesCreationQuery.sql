@@ -6,7 +6,8 @@ CREATE TABLE Users (
   password_hash VARCHAR(MAX) NOT NULL,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
-  phone_number VARCHAR(20)
+  phone_number VARCHAR(20),
+  admin BIT DEFAULT 0
 );
 
 CREATE TABLE Societies (
@@ -57,7 +58,7 @@ CREATE TABLE Teams (
   team_head_id INT FOREIGN KEY REFERENCES Users(user_id) ON DELETE SET NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_team_event FOREIGN KEY (event_id) REFERENCES Events(event_id),
-  CONSTRAINT fk_team_head FOREIGN KEY (team_head_id) REFERENCES Users(user_id),
+  CONSTRAINT fk_team_head FOREIGN KEY (team_head_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE TeamMembers (
@@ -78,11 +79,38 @@ CREATE TABLE Tasks (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   completed BIT DEFAULT 0,
   CONSTRAINT fk_task_team FOREIGN KEY (team_id) REFERENCES Teams(team_id),
-  CONSTRAINT fk_task_assignee FOREIGN KEY (assigned_to) REFERENCES Users(user_id),
+  CONSTRAINT fk_task_assignee FOREIGN KEY (assigned_to) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Announcements (
+  announcement_id INT PRIMARY KEY IDENTITY(1,1),
+  user_id INT FOREIGN KEY REFERENCES Users(user_id) ON DELETE SET NULL,
+  event_id INT FOREIGN KEY REFERENCES Events(event_id) ON DELETE SET NULL,
+  text TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_announcement_user FOREIGN KEY (user_id) REFERENCES Users(user_id),
+  CONSTRAINT fk_announcement_event FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
 
 SELECT * FROM Users;
 DELETE FROM Users;
 
+UPDATE Users
+SET phone_number = NULL
+WHERE user_id = 1;
+
 SELECT * FROM Societies;
 DELETE FROM Societies;
+
+SELECT * FROM Announcements;
+DELETE FROM Announcements;
+
+DROP TABLE Teams;
+DROP TABLE TeamMembers;
+DROP TABLE Tasks;
+DROP TABLE Events;
+DROP TABLE Announcements;
+DROP TABLE Memberships;
+DROP TABLE Societies;
+DROP TABLE UserRoles;
+DROP TABLE Users;

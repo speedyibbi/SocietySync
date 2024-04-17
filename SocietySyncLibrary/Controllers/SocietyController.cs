@@ -3,7 +3,7 @@ using Dapper;
 
 namespace SocietySyncLibrary;
 
-public class SocietyController
+public static class SocietyController
 {
     private static readonly IDbConnection _connection = Database.Instance.Connection;
 

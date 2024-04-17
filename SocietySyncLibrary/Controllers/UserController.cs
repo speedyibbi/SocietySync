@@ -4,21 +4,24 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace SocietySyncLibrary;
 
-public class UserController
+public static class UserController
 {
     private static readonly IDbConnection _connection = Database.Instance.Connection;
+
+    public static User? loggedInUser { get; set; } = null;
 
     public static bool Save(User user)
     {
         try
         {
-            const string insertSql = "INSERT INTO Users (email, password_hash, first_name, last_name, phone_number) VALUES (@email, @passwordHash, @firstName, @lastName, @phoneNumber)";
+            const string insertSql = "INSERT INTO Users (email, password_hash, first_name, last_name, phone_number, admin) VALUES (@email, @passwordHash, @firstName, @lastName, @phoneNumber, @admin)";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@email", user.Email);
             parameters.Add("@passwordHash", HashPassword(user.PasswordHash!));
             parameters.Add("@firstName", user.FirstName);
             parameters.Add("@lastName", user.LastName);
             parameters.Add("@phoneNumber", user.PhoneNumber, DbType.String);
+            parameters.Add("@admin", user.Admin);
 
             user.UserID = _connection.ExecuteScalar<int>(insertSql, parameters);
 
@@ -65,7 +68,7 @@ public class UserController
     {
         string? hash = rehash ? HashPassword(user.PasswordHash!) : user.PasswordHash;
 
-        const string sql = "UPDATE Users SET email = @email, password_hash = @passwordHash, first_name = @firstName, last_name = @lastName, phone_number = @phoneNumber WHERE user_id = @userId";
+        const string sql = "UPDATE Users SET email = @email, password_hash = @passwordHash, first_name = @firstName, last_name = @lastName, phone_number = @phoneNumber, admin = @admin WHERE user_id = @userId";
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@userId", user.UserID);
         parameters.Add("@email", user.Email);
@@ -73,6 +76,7 @@ public class UserController
         parameters.Add("@firstName", user.FirstName);
         parameters.Add("@lastName", user.LastName);
         parameters.Add("@phoneNumber", user.PhoneNumber, DbType.String);
+        parameters.Add("@admin", user.Admin);
 
         int rowsAffected = _connection.Execute(sql, parameters);
 
@@ -92,15 +96,15 @@ public class UserController
         return rowsAffected > 0;
     }
 
+    public static bool VerifyPassword(string password, string passwordHash)
+    {
+        return BC.Verify(password, passwordHash);
+    }
+
     private static string HashPassword(string password)
     {
         string salt = BC.GenerateSalt(12);
         
         return BC.HashPassword(password, salt);
-    }
-
-    private static bool VerifyPassword(string password, string passwordHash)
-    {
-        return BC.Verify(password, passwordHash);
     }
 }

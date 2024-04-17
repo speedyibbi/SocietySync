@@ -21,4 +21,7 @@ public class User
 
     [Column("phone_number")]
     public string? PhoneNumber { get; set; }
+    
+    [Column("admin")]
+    public bool Admin { get; set; } = false;
 }
