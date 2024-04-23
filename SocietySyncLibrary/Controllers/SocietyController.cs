@@ -62,7 +62,7 @@ public static class SocietyController
     public static bool Update(Society society)
     {
         const string sql = "UPDATE Societies SET name = @name, description = @description, president = @president, created_at = @createdAt WHERE society_id = @societyId";
-        var parameters = new DynamicParameters();
+        DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@societyId", society.SocietyID);
         parameters.Add("@name", society.Name);
         parameters.Add("@description", society.Description);
