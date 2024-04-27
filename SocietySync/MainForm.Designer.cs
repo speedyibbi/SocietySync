@@ -58,11 +58,7 @@
             HomeSettingsLink = new Label();
             HomePanel = new Panel();
             HomeAnnouncementsLabel = new Label();
-            Announcement1 = new Panel();
-            Announcement1Name = new Label();
-            Announcement1Society = new Label();
-            Announcement1Text = new Label();
-            Announcement1Date = new Label();
+            HomeNoAnnouncementsLabel = new Label();
             Societies = new Panel();
             SocietiesHomeLink = new Label();
             SocietiesSocietiesLink = new Label();
@@ -71,15 +67,9 @@
             SocietiesPanel = new Panel();
             SocietiesNewSocietyButton = new Panel();
             SocietiesJoinedLabel = new Label();
-            SocietiesSociety1 = new Panel();
-            SocietiesSociety1Picture = new PictureBox();
-            SocietiesSociety1Label = new Label();
-            SocietiesSociety1SettingsButton = new PictureBox();
+            SocietiesNoJoinedLabel = new Label();
             SocietiesDiscoverLabel = new Label();
-            SocietiesSociety2 = new Panel();
-            SocietiesSociety2Picture = new PictureBox();
-            SocietiesSociety2Label = new Label();
-            SocietiesSociety2SettingsButton = new PictureBox();
+            SocietiesNoDiscoverLabel = new Label();
             Society2Picture = new PictureBox();
             Society2Label = new Label();
             Events = new Panel();
@@ -89,17 +79,9 @@
             EventsSettingsLink = new Label();
             EventsPanel = new Panel();
             EventsParticipating = new Label();
-            EventsEvent1 = new Panel();
-            EventsEvent1Name = new Label();
-            EventsEvent1Text = new Label();
-            EventsEvent1Society = new Label();
-            EventsEvent1SettingsButton = new PictureBox();
+            EventsNoParticipating = new Label();
             EventsOther = new Label();
-            EventsEvent2 = new Panel();
-            EventsEvent2Name = new Label();
-            EventsEvent2Text = new Label();
-            EventsEvent2Society = new Label();
-            EventsEvent2SettingsButton = new PictureBox();
+            EventsNoOther = new Label();
             Settings = new Panel();
             SettingsHomeLink = new Label();
             SettingsSocietiesLink = new Label();
@@ -251,22 +233,11 @@
             LogIn.SuspendLayout();
             Home.SuspendLayout();
             HomePanel.SuspendLayout();
-            Announcement1.SuspendLayout();
             Societies.SuspendLayout();
             SocietiesPanel.SuspendLayout();
-            SocietiesSociety1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety1Picture).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety1SettingsButton).BeginInit();
-            SocietiesSociety2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety2Picture).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety2SettingsButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Society2Picture).BeginInit();
             Events.SuspendLayout();
             EventsPanel.SuspendLayout();
-            EventsEvent1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)EventsEvent1SettingsButton).BeginInit();
-            EventsEvent2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)EventsEvent2SettingsButton).BeginInit();
             Settings.SuspendLayout();
             SettingsPanel.SuspendLayout();
             Society.SuspendLayout();
@@ -631,7 +602,7 @@
             HomePanel.AutoScroll = true;
             HomePanel.BackColor = Color.Transparent;
             HomePanel.Controls.Add(HomeAnnouncementsLabel);
-            HomePanel.Controls.Add(Announcement1);
+            HomePanel.Controls.Add(HomeNoAnnouncementsLabel);
             HomePanel.Dock = DockStyle.Right;
             HomePanel.Location = new Point(372, 0);
             HomePanel.Name = "HomePanel";
@@ -649,61 +620,17 @@
             HomeAnnouncementsLabel.TabIndex = 6;
             HomeAnnouncementsLabel.Text = "Announcements";
             // 
-            // Announcement1
+            // HomeNoAnnouncementsLabel
             // 
-            Announcement1.BackgroundImageLayout = ImageLayout.Stretch;
-            Announcement1.Controls.Add(Announcement1Name);
-            Announcement1.Controls.Add(Announcement1Society);
-            Announcement1.Controls.Add(Announcement1Text);
-            Announcement1.Controls.Add(Announcement1Date);
-            Announcement1.Location = new Point(63, 246);
-            Announcement1.Name = "Announcement1";
-            Announcement1.Size = new Size(685, 175);
-            Announcement1.TabIndex = 0;
-            // 
-            // Announcement1Name
-            // 
-            Announcement1Name.AutoSize = true;
-            Announcement1Name.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Announcement1Name.ForeColor = Color.Black;
-            Announcement1Name.Location = new Point(25, 25);
-            Announcement1Name.Name = "Announcement1Name";
-            Announcement1Name.Size = new Size(133, 24);
-            Announcement1Name.TabIndex = 0;
-            Announcement1Name.Text = "Ibrahim Khan";
-            // 
-            // Announcement1Society
-            // 
-            Announcement1Society.AutoSize = true;
-            Announcement1Society.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Announcement1Society.ForeColor = Color.Gray;
-            Announcement1Society.Location = new Point(158, 25);
-            Announcement1Society.Name = "Announcement1Society";
-            Announcement1Society.Size = new Size(208, 24);
-            Announcement1Society.TabIndex = 1;
-            Announcement1Society.Text = "| Community Service";
-            // 
-            // Announcement1Text
-            // 
-            Announcement1Text.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            Announcement1Text.Font = new Font("Inter Italic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Announcement1Text.ForeColor = Color.Black;
-            Announcement1Text.Location = new Point(25, 59);
-            Announcement1Text.Name = "Announcement1Text";
-            Announcement1Text.Size = new Size(632, 51);
-            Announcement1Text.TabIndex = 2;
-            Announcement1Text.Text = "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”";
-            // 
-            // Announcement1Date
-            // 
-            Announcement1Date.AutoSize = true;
-            Announcement1Date.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Announcement1Date.ForeColor = Color.Gray;
-            Announcement1Date.Location = new Point(25, 120);
-            Announcement1Date.Name = "Announcement1Date";
-            Announcement1Date.Size = new Size(323, 24);
-            Announcement1Date.TabIndex = 3;
-            Announcement1Date.Text = "- Wednesday, 10th April at 23:30";
+            HomeNoAnnouncementsLabel.AutoSize = true;
+            HomeNoAnnouncementsLabel.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            HomeNoAnnouncementsLabel.ForeColor = Color.Black;
+            HomeNoAnnouncementsLabel.Location = new Point(85, 185);
+            HomeNoAnnouncementsLabel.Name = "HomeNoAnnouncementsLabel";
+            HomeNoAnnouncementsLabel.Size = new Size(434, 36);
+            HomeNoAnnouncementsLabel.TabIndex = 7;
+            HomeNoAnnouncementsLabel.Text = "No Announcements Available";
+            HomeNoAnnouncementsLabel.Visible = false;
             // 
             // Societies
             // 
@@ -772,9 +699,9 @@
             SocietiesPanel.BackColor = Color.Transparent;
             SocietiesPanel.Controls.Add(SocietiesNewSocietyButton);
             SocietiesPanel.Controls.Add(SocietiesJoinedLabel);
-            SocietiesPanel.Controls.Add(SocietiesSociety1);
+            SocietiesPanel.Controls.Add(SocietiesNoJoinedLabel);
             SocietiesPanel.Controls.Add(SocietiesDiscoverLabel);
-            SocietiesPanel.Controls.Add(SocietiesSociety2);
+            SocietiesPanel.Controls.Add(SocietiesNoDiscoverLabel);
             SocietiesPanel.Dock = DockStyle.Right;
             SocietiesPanel.Location = new Point(372, 0);
             SocietiesPanel.Name = "SocietiesPanel";
@@ -800,49 +727,17 @@
             SocietiesJoinedLabel.TabIndex = 5;
             SocietiesJoinedLabel.Text = "Joined";
             // 
-            // SocietiesSociety1
+            // SocietiesNoJoinedLabel
             // 
-            SocietiesSociety1.Controls.Add(SocietiesSociety1Picture);
-            SocietiesSociety1.Controls.Add(SocietiesSociety1Label);
-            SocietiesSociety1.Controls.Add(SocietiesSociety1SettingsButton);
-            SocietiesSociety1.Location = new Point(63, 246);
-            SocietiesSociety1.Name = "SocietiesSociety1";
-            SocietiesSociety1.Size = new Size(310, 241);
-            SocietiesSociety1.TabIndex = 13;
-            // 
-            // SocietiesSociety1Picture
-            // 
-            SocietiesSociety1Picture.BackColor = Color.OrangeRed;
-            SocietiesSociety1Picture.BackgroundImage = (Image)resources.GetObject("SocietiesSociety1Picture.BackgroundImage");
-            SocietiesSociety1Picture.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietiesSociety1Picture.Location = new Point(105, 50);
-            SocietiesSociety1Picture.Name = "SocietiesSociety1Picture";
-            SocietiesSociety1Picture.Size = new Size(100, 100);
-            SocietiesSociety1Picture.TabIndex = 7;
-            SocietiesSociety1Picture.TabStop = false;
-            // 
-            // SocietiesSociety1Label
-            // 
-            SocietiesSociety1Label.Font = new Font("Inter Medium", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            SocietiesSociety1Label.ForeColor = Color.Black;
-            SocietiesSociety1Label.Location = new Point(25, 160);
-            SocietiesSociety1Label.Name = "SocietiesSociety1Label";
-            SocietiesSociety1Label.Size = new Size(260, 75);
-            SocietiesSociety1Label.TabIndex = 10;
-            SocietiesSociety1Label.Text = "Community Service Society";
-            SocietiesSociety1Label.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // SocietiesSociety1SettingsButton
-            // 
-            SocietiesSociety1SettingsButton.BackColor = Color.Transparent;
-            SocietiesSociety1SettingsButton.BackgroundImage = (Image)resources.GetObject("SocietiesSociety1SettingsButton.BackgroundImage");
-            SocietiesSociety1SettingsButton.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietiesSociety1SettingsButton.Cursor = Cursors.Hand;
-            SocietiesSociety1SettingsButton.Location = new Point(230, 25);
-            SocietiesSociety1SettingsButton.Name = "SocietiesSociety1SettingsButton";
-            SocietiesSociety1SettingsButton.Size = new Size(20, 20);
-            SocietiesSociety1SettingsButton.TabIndex = 11;
-            SocietiesSociety1SettingsButton.TabStop = false;
+            SocietiesNoJoinedLabel.AutoSize = true;
+            SocietiesNoJoinedLabel.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            SocietiesNoJoinedLabel.ForeColor = Color.Black;
+            SocietiesNoJoinedLabel.Location = new Point(85, 185);
+            SocietiesNoJoinedLabel.Name = "SocietiesNoJoinedLabel";
+            SocietiesNoJoinedLabel.Size = new Size(299, 36);
+            SocietiesNoJoinedLabel.TabIndex = 16;
+            SocietiesNoJoinedLabel.Text = "No Societies Joined";
+            SocietiesNoJoinedLabel.Visible = false;
             // 
             // SocietiesDiscoverLabel
             // 
@@ -855,49 +750,17 @@
             SocietiesDiscoverLabel.TabIndex = 8;
             SocietiesDiscoverLabel.Text = "Discover";
             // 
-            // SocietiesSociety2
+            // SocietiesNoDiscoverLabel
             // 
-            SocietiesSociety2.Controls.Add(SocietiesSociety2Picture);
-            SocietiesSociety2.Controls.Add(SocietiesSociety2Label);
-            SocietiesSociety2.Controls.Add(SocietiesSociety2SettingsButton);
-            SocietiesSociety2.Location = new Point(63, 598);
-            SocietiesSociety2.Name = "SocietiesSociety2";
-            SocietiesSociety2.Size = new Size(310, 241);
-            SocietiesSociety2.TabIndex = 14;
-            // 
-            // SocietiesSociety2Picture
-            // 
-            SocietiesSociety2Picture.BackColor = Color.MediumPurple;
-            SocietiesSociety2Picture.BackgroundImage = (Image)resources.GetObject("SocietiesSociety2Picture.BackgroundImage");
-            SocietiesSociety2Picture.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietiesSociety2Picture.Location = new Point(105, 50);
-            SocietiesSociety2Picture.Name = "SocietiesSociety2Picture";
-            SocietiesSociety2Picture.Size = new Size(100, 100);
-            SocietiesSociety2Picture.TabIndex = 7;
-            SocietiesSociety2Picture.TabStop = false;
-            // 
-            // SocietiesSociety2Label
-            // 
-            SocietiesSociety2Label.Font = new Font("Inter Medium", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            SocietiesSociety2Label.ForeColor = Color.Black;
-            SocietiesSociety2Label.Location = new Point(25, 160);
-            SocietiesSociety2Label.Name = "SocietiesSociety2Label";
-            SocietiesSociety2Label.Size = new Size(260, 75);
-            SocietiesSociety2Label.TabIndex = 10;
-            SocietiesSociety2Label.Text = "Debating Society";
-            SocietiesSociety2Label.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // SocietiesSociety2SettingsButton
-            // 
-            SocietiesSociety2SettingsButton.BackColor = Color.Transparent;
-            SocietiesSociety2SettingsButton.BackgroundImage = (Image)resources.GetObject("SocietiesSociety2SettingsButton.BackgroundImage");
-            SocietiesSociety2SettingsButton.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietiesSociety2SettingsButton.Cursor = Cursors.Hand;
-            SocietiesSociety2SettingsButton.Location = new Point(230, 25);
-            SocietiesSociety2SettingsButton.Name = "SocietiesSociety2SettingsButton";
-            SocietiesSociety2SettingsButton.Size = new Size(20, 20);
-            SocietiesSociety2SettingsButton.TabIndex = 11;
-            SocietiesSociety2SettingsButton.TabStop = false;
+            SocietiesNoDiscoverLabel.AutoSize = true;
+            SocietiesNoDiscoverLabel.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            SocietiesNoDiscoverLabel.ForeColor = Color.Black;
+            SocietiesNoDiscoverLabel.Location = new Point(85, 537);
+            SocietiesNoDiscoverLabel.Name = "SocietiesNoDiscoverLabel";
+            SocietiesNoDiscoverLabel.Size = new Size(265, 36);
+            SocietiesNoDiscoverLabel.TabIndex = 17;
+            SocietiesNoDiscoverLabel.Text = "No Discoverables";
+            SocietiesNoDiscoverLabel.Visible = false;
             // 
             // Society2Picture
             // 
@@ -987,9 +850,9 @@
             EventsPanel.AutoScroll = true;
             EventsPanel.BackColor = Color.Transparent;
             EventsPanel.Controls.Add(EventsParticipating);
-            EventsPanel.Controls.Add(EventsEvent1);
+            EventsPanel.Controls.Add(EventsNoParticipating);
             EventsPanel.Controls.Add(EventsOther);
-            EventsPanel.Controls.Add(EventsEvent2);
+            EventsPanel.Controls.Add(EventsNoOther);
             EventsPanel.Dock = DockStyle.Right;
             EventsPanel.Location = new Point(372, 0);
             EventsPanel.Name = "EventsPanel";
@@ -1007,61 +870,17 @@
             EventsParticipating.TabIndex = 8;
             EventsParticipating.Text = "Participating";
             // 
-            // EventsEvent1
+            // EventsNoParticipating
             // 
-            EventsEvent1.BackgroundImageLayout = ImageLayout.Stretch;
-            EventsEvent1.Controls.Add(EventsEvent1Name);
-            EventsEvent1.Controls.Add(EventsEvent1Text);
-            EventsEvent1.Controls.Add(EventsEvent1Society);
-            EventsEvent1.Controls.Add(EventsEvent1SettingsButton);
-            EventsEvent1.Location = new Point(63, 246);
-            EventsEvent1.Name = "EventsEvent1";
-            EventsEvent1.Size = new Size(685, 181);
-            EventsEvent1.TabIndex = 13;
-            // 
-            // EventsEvent1Name
-            // 
-            EventsEvent1Name.AutoSize = true;
-            EventsEvent1Name.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            EventsEvent1Name.ForeColor = Color.Black;
-            EventsEvent1Name.Location = new Point(25, 25);
-            EventsEvent1Name.Name = "EventsEvent1Name";
-            EventsEvent1Name.Size = new Size(362, 36);
-            EventsEvent1Name.TabIndex = 0;
-            EventsEvent1Name.Text = "Dog Shelter Fund Raiser";
-            // 
-            // EventsEvent1Text
-            // 
-            EventsEvent1Text.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            EventsEvent1Text.Font = new Font("Inter Italic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EventsEvent1Text.ForeColor = Color.Black;
-            EventsEvent1Text.Location = new Point(25, 76);
-            EventsEvent1Text.Name = "EventsEvent1Text";
-            EventsEvent1Text.Size = new Size(635, 51);
-            EventsEvent1Text.TabIndex = 2;
-            EventsEvent1Text.Text = "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”";
-            // 
-            // EventsEvent1Society
-            // 
-            EventsEvent1Society.AutoSize = true;
-            EventsEvent1Society.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EventsEvent1Society.ForeColor = Color.Gray;
-            EventsEvent1Society.Location = new Point(25, 142);
-            EventsEvent1Society.Name = "EventsEvent1Society";
-            EventsEvent1Society.Size = new Size(287, 24);
-            EventsEvent1Society.TabIndex = 3;
-            EventsEvent1Society.Text = "- Community Service Society";
-            // 
-            // EventsEvent1SettingsButton
-            // 
-            EventsEvent1SettingsButton.BackColor = Color.Transparent;
-            EventsEvent1SettingsButton.BackgroundImage = (Image)resources.GetObject("EventsEvent1SettingsButton.BackgroundImage");
-            EventsEvent1SettingsButton.BackgroundImageLayout = ImageLayout.Stretch;
-            EventsEvent1SettingsButton.Location = new Point(640, 33);
-            EventsEvent1SettingsButton.Name = "EventsEvent1SettingsButton";
-            EventsEvent1SettingsButton.Size = new Size(20, 20);
-            EventsEvent1SettingsButton.TabIndex = 13;
-            EventsEvent1SettingsButton.TabStop = false;
+            EventsNoParticipating.AutoSize = true;
+            EventsNoParticipating.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            EventsNoParticipating.ForeColor = Color.Black;
+            EventsNoParticipating.Location = new Point(85, 185);
+            EventsNoParticipating.Name = "EventsNoParticipating";
+            EventsNoParticipating.Size = new Size(350, 36);
+            EventsNoParticipating.TabIndex = 15;
+            EventsNoParticipating.Text = "No Participating Events";
+            EventsNoParticipating.Visible = false;
             // 
             // EventsOther
             // 
@@ -1074,61 +893,17 @@
             EventsOther.TabIndex = 14;
             EventsOther.Text = "Other";
             // 
-            // EventsEvent2
+            // EventsNoOther
             // 
-            EventsEvent2.BackgroundImageLayout = ImageLayout.Stretch;
-            EventsEvent2.Controls.Add(EventsEvent2Name);
-            EventsEvent2.Controls.Add(EventsEvent2Text);
-            EventsEvent2.Controls.Add(EventsEvent2Society);
-            EventsEvent2.Controls.Add(EventsEvent2SettingsButton);
-            EventsEvent2.Location = new Point(63, 538);
-            EventsEvent2.Name = "EventsEvent2";
-            EventsEvent2.Size = new Size(685, 181);
-            EventsEvent2.TabIndex = 14;
-            // 
-            // EventsEvent2Name
-            // 
-            EventsEvent2Name.AutoSize = true;
-            EventsEvent2Name.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            EventsEvent2Name.ForeColor = Color.Black;
-            EventsEvent2Name.Location = new Point(25, 25);
-            EventsEvent2Name.Name = "EventsEvent2Name";
-            EventsEvent2Name.Size = new Size(405, 36);
-            EventsEvent2Name.TabIndex = 0;
-            EventsEvent2Name.Text = "Lord of the Rings Marathon";
-            // 
-            // EventsEvent2Text
-            // 
-            EventsEvent2Text.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            EventsEvent2Text.Font = new Font("Inter Italic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EventsEvent2Text.ForeColor = Color.Black;
-            EventsEvent2Text.Location = new Point(25, 76);
-            EventsEvent2Text.Name = "EventsEvent2Text";
-            EventsEvent2Text.Size = new Size(635, 51);
-            EventsEvent2Text.TabIndex = 2;
-            EventsEvent2Text.Text = "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”";
-            // 
-            // EventsEvent2Society
-            // 
-            EventsEvent2Society.AutoSize = true;
-            EventsEvent2Society.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            EventsEvent2Society.ForeColor = Color.Gray;
-            EventsEvent2Society.Location = new Point(25, 142);
-            EventsEvent2Society.Name = "EventsEvent2Society";
-            EventsEvent2Society.Size = new Size(193, 24);
-            EventsEvent2Society.TabIndex = 3;
-            EventsEvent2Society.Text = "- Literature Society";
-            // 
-            // EventsEvent2SettingsButton
-            // 
-            EventsEvent2SettingsButton.BackColor = Color.Transparent;
-            EventsEvent2SettingsButton.BackgroundImage = (Image)resources.GetObject("EventsEvent2SettingsButton.BackgroundImage");
-            EventsEvent2SettingsButton.BackgroundImageLayout = ImageLayout.Stretch;
-            EventsEvent2SettingsButton.Location = new Point(640, 33);
-            EventsEvent2SettingsButton.Name = "EventsEvent2SettingsButton";
-            EventsEvent2SettingsButton.Size = new Size(20, 20);
-            EventsEvent2SettingsButton.TabIndex = 13;
-            EventsEvent2SettingsButton.TabStop = false;
+            EventsNoOther.AutoSize = true;
+            EventsNoOther.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            EventsNoOther.ForeColor = Color.Black;
+            EventsNoOther.Location = new Point(85, 477);
+            EventsNoOther.Name = "EventsNoOther";
+            EventsNoOther.Size = new Size(250, 36);
+            EventsNoOther.TabIndex = 16;
+            EventsNoOther.Text = "No Other Events";
+            EventsNoOther.Visible = false;
             // 
             // Settings
             // 
@@ -2847,27 +2622,13 @@
             Home.ResumeLayout(false);
             HomePanel.ResumeLayout(false);
             HomePanel.PerformLayout();
-            Announcement1.ResumeLayout(false);
-            Announcement1.PerformLayout();
             Societies.ResumeLayout(false);
             SocietiesPanel.ResumeLayout(false);
             SocietiesPanel.PerformLayout();
-            SocietiesSociety1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety1Picture).EndInit();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety1SettingsButton).EndInit();
-            SocietiesSociety2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety2Picture).EndInit();
-            ((System.ComponentModel.ISupportInitialize)SocietiesSociety2SettingsButton).EndInit();
             ((System.ComponentModel.ISupportInitialize)Society2Picture).EndInit();
             Events.ResumeLayout(false);
             EventsPanel.ResumeLayout(false);
             EventsPanel.PerformLayout();
-            EventsEvent1.ResumeLayout(false);
-            EventsEvent1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)EventsEvent1SettingsButton).EndInit();
-            EventsEvent2.ResumeLayout(false);
-            EventsEvent2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)EventsEvent2SettingsButton).EndInit();
             Settings.ResumeLayout(false);
             SettingsPanel.ResumeLayout(false);
             SettingsPanel.PerformLayout();
@@ -2950,11 +2711,6 @@
         private Label LogInEmailLabel;
         private Label LogInPasswordLabel;
         private Label LogInError;
-        private Panel Announcement1;
-        private Label Announcement1Name;
-        private Label Announcement1Society;
-        private Label Announcement1Text;
-        private Label Announcement1Date;
         private Panel Societies;
         private Label SocietiesHomeLink;
         private Label SocietiesSocietiesLink;
@@ -2963,35 +2719,16 @@
         private Panel SocietiesPanel;
         private Label SocietiesJoinedLabel;
         private Label Society2Label;
-        private PictureBox SocietiesSociety1Picture;
         private Label SocietiesDiscoverLabel;
         private PictureBox Society2Picture;
-        private Label SocietiesSociety1Label;
-        private PictureBox SocietiesSociety1SettingsButton;
         private PictureBox Society2SettingsPicture;
-        private Panel SocietiesSociety1;
-        private Panel SocietiesSociety2;
-        private PictureBox SocietiesSociety2Picture;
-        private Label SocietiesSociety2Label;
-        private PictureBox SocietiesSociety2SettingsButton;
         private Panel Events;
         private Label EventsHomeLink;
         private Label EventsSocietiesLink;
         private Label EventsEventsLink;
         private Label EventsSettingsLink;
         private Panel EventsPanel;
-        private Label EventsParticipating;
-        private Panel EventsEvent1;
-        private Label EventsEvent1Name;
-        private Label EventsEvent1Text;
-        private Label EventsEvent1Society;
-        private PictureBox EventsEvent1SettingsButton;
         private Label EventsOther;
-        private Panel EventsEvent2;
-        private Label EventsEvent2Name;
-        private Label EventsEvent2Text;
-        private Label EventsEvent2Society;
-        private PictureBox EventsEvent2SettingsButton;
         private Panel HomePanel;
         private Label HomeAnnouncementsLabel;
         private Panel SocietiesNewSocietyButton;
@@ -3142,5 +2879,11 @@
         private Label EventTeamListRow1Column4;
         private Panel EventTeamListRow1Underline;
         private PictureBox EventTeamListRow1Link;
+        private Label HomeNoAnnouncementsLabel;
+        private Label SocietiesNoJoinedLabel;
+        private Label SocietiesNoDiscoverLabel;
+        private Label EventsParticipating;
+        private Label EventsNoParticipating;
+        private Label EventsNoOther;
     }
 }

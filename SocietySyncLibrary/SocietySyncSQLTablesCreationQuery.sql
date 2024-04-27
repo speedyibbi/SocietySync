@@ -96,7 +96,7 @@ SELECT * FROM Users;
 DELETE FROM Users;
 
 UPDATE Users
-SET phone_number = NULL
+SET admin = 1
 WHERE user_id = 1;
 
 SELECT * FROM Societies;
@@ -104,6 +104,14 @@ DELETE FROM Societies;
 
 SELECT * FROM Announcements;
 DELETE FROM Announcements;
+
+SELECT Users.first_name, Users.last_name, Societies.name, Announcements.text, Announcements.created_at
+FROM Announcements
+JOIN Users ON Announcements.user_id = Users.user_id
+JOIN Events ON Announcements.event_id = Events.event_id
+JOIN Societies ON Events.society_id = Societies.society_id
+JOIN Memberships ON Societies.society_id = Memberships.society_id
+WHERE Memberships.user_id = 1;
 
 DROP TABLE Teams;
 DROP TABLE TeamMembers;

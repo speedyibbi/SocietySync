@@ -8,8 +8,6 @@ public static class UserController
 {
     private static readonly IDbConnection _connection = Database.Instance.Connection;
 
-    public static User? loggedInUser { get; set; } = null;
-
     public static bool Save(User user)
     {
         try
