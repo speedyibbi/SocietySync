@@ -40,16 +40,19 @@ namespace SocietySync.User_Controls
 
             Random random = new Random();
             TemplateSocietyPicture.BackColor = Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256));
+        }
 
+        public void UpdateFunctions()
+        {
             Click += (sender, e) => TemplateSocietyClicked?.Invoke(this, EventArgs.Empty);
             TemplateSocietyLabel.Click += (sender, e) => TemplateSocietyClicked?.Invoke(this, EventArgs.Empty);
             TemplateSocietyPicture.Click += (sender, e) => TemplateSocietyClicked?.Invoke(this, EventArgs.Empty);
 
             if (!hideSettings)
             {
+                TemplateSocietySettingsButton.Visible = true;
                 TemplateSocietySettingsButton.Click += (sender, e) => TemplateSocietySettingsClicked?.Invoke(this, EventArgs.Empty);
-            }
-            else
+            } else
             {
                 TemplateSocietySettingsButton.Visible = false;
             }

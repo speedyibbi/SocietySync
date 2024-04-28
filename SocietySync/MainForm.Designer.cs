@@ -108,12 +108,8 @@
             SocietyDescriptionLabel = new Label();
             SocietyDescriptionText = new Label();
             SocietyAnnouncementsLabel = new Label();
+            SocietyNoAnnouncementsLabel = new Label();
             SocietyNewAnnouncementButton = new PictureBox();
-            SocietyAnnouncement1 = new Panel();
-            SocietyAnnouncement1Name = new Label();
-            SocietyAnnouncement1Text = new Label();
-            SocietyAnnouncement1Date = new Label();
-            SocietyAnnouncement1Settings = new PictureBox();
             SocietyPresidentLabel = new Label();
             SocietyPresdientText = new Label();
             SocietyPresidentUnderline = new Panel();
@@ -178,14 +174,6 @@
             SocietyUserListColumn5 = new Label();
             SocietyUserListColumn6 = new Label();
             SocietyUserListColumnsUnderline = new Panel();
-            SocietyUserListRow1 = new Panel();
-            SocietyUserListRow1Column1 = new Label();
-            SocietyUserListRow1Column2 = new Label();
-            SocietyUserListRow1Column3 = new Label();
-            SocietyUserListRow1Column4 = new Label();
-            SocietyUserListRow1Column5 = new Label();
-            SocietyUserListRow1Column6 = new Label();
-            SocietyUserListRow1Underline = new Panel();
             TeamUserList = new Panel();
             TeamUserListHomeLink = new Label();
             TeamUserListSocietiesLink = new Label();
@@ -243,8 +231,6 @@
             Society.SuspendLayout();
             SocietyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)SocietyNewAnnouncementButton).BeginInit();
-            SocietyAnnouncement1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)SocietyAnnouncement1Settings).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SocietyNewEventButton).BeginInit();
             Event.SuspendLayout();
             EventPanel.SuspendLayout();
@@ -261,7 +247,6 @@
             SocietyUserList.SuspendLayout();
             SocietyUserListPanel.SuspendLayout();
             SocietyUserListColumns.SuspendLayout();
-            SocietyUserListRow1.SuspendLayout();
             TeamUserList.SuspendLayout();
             TeamUserListPanel.SuspendLayout();
             TeamUserListColumns.SuspendLayout();
@@ -715,6 +700,7 @@
             SocietiesNewSocietyButton.Name = "SocietiesNewSocietyButton";
             SocietiesNewSocietyButton.Size = new Size(36, 36);
             SocietiesNewSocietyButton.TabIndex = 15;
+            SocietiesNewSocietyButton.Click += OpenNewSocietyForm;
             // 
             // SocietiesJoinedLabel
             // 
@@ -1151,8 +1137,8 @@
             SocietyPanel.Controls.Add(SocietyDescriptionLabel);
             SocietyPanel.Controls.Add(SocietyDescriptionText);
             SocietyPanel.Controls.Add(SocietyAnnouncementsLabel);
+            SocietyPanel.Controls.Add(SocietyNoAnnouncementsLabel);
             SocietyPanel.Controls.Add(SocietyNewAnnouncementButton);
-            SocietyPanel.Controls.Add(SocietyAnnouncement1);
             SocietyPanel.Controls.Add(SocietyPresidentLabel);
             SocietyPanel.Controls.Add(SocietyPresdientText);
             SocietyPanel.Controls.Add(SocietyPresidentUnderline);
@@ -1171,6 +1157,7 @@
             SocietyApplicationButton.Name = "SocietyApplicationButton";
             SocietyApplicationButton.Size = new Size(36, 36);
             SocietyApplicationButton.TabIndex = 9;
+            SocietyApplicationButton.Click += OpenSocietyApplicationForm;
             // 
             // SocietyUserListButton
             // 
@@ -1179,6 +1166,8 @@
             SocietyUserListButton.Name = "SocietyUserListButton";
             SocietyUserListButton.Size = new Size(36, 36);
             SocietyUserListButton.TabIndex = 10;
+            SocietyUserListButton.Tag = "screen SocietyUserList";
+            SocietyUserListButton.Click += SelectScreen;
             // 
             // SocietyName
             // 
@@ -1209,7 +1198,7 @@
             SocietyDescriptionText.Name = "SocietyDescriptionText";
             SocietyDescriptionText.Size = new Size(685, 100);
             SocietyDescriptionText.TabIndex = 8;
-            SocietyDescriptionText.Text = "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”";
+            SocietyDescriptionText.Text = "No Description";
             // 
             // SocietyAnnouncementsLabel
             // 
@@ -1222,6 +1211,17 @@
             SocietyAnnouncementsLabel.TabIndex = 11;
             SocietyAnnouncementsLabel.Text = "Announcements";
             // 
+            // SocietyNoAnnouncementsLabel
+            // 
+            SocietyNoAnnouncementsLabel.AutoSize = true;
+            SocietyNoAnnouncementsLabel.Font = new Font("Inter Medium", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            SocietyNoAnnouncementsLabel.ForeColor = Color.Black;
+            SocietyNoAnnouncementsLabel.Location = new Point(85, 396);
+            SocietyNoAnnouncementsLabel.Name = "SocietyNoAnnouncementsLabel";
+            SocietyNoAnnouncementsLabel.Size = new Size(434, 36);
+            SocietyNoAnnouncementsLabel.TabIndex = 19;
+            SocietyNoAnnouncementsLabel.Text = "No Announcements Available";
+            // 
             // SocietyNewAnnouncementButton
             // 
             SocietyNewAnnouncementButton.BackgroundImage = (Image)resources.GetObject("SocietyNewAnnouncementButton.BackgroundImage");
@@ -1232,62 +1232,7 @@
             SocietyNewAnnouncementButton.Size = new Size(20, 20);
             SocietyNewAnnouncementButton.TabIndex = 13;
             SocietyNewAnnouncementButton.TabStop = false;
-            // 
-            // SocietyAnnouncement1
-            // 
-            SocietyAnnouncement1.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietyAnnouncement1.Controls.Add(SocietyAnnouncement1Name);
-            SocietyAnnouncement1.Controls.Add(SocietyAnnouncement1Text);
-            SocietyAnnouncement1.Controls.Add(SocietyAnnouncement1Date);
-            SocietyAnnouncement1.Controls.Add(SocietyAnnouncement1Settings);
-            SocietyAnnouncement1.Location = new Point(63, 457);
-            SocietyAnnouncement1.Name = "SocietyAnnouncement1";
-            SocietyAnnouncement1.Size = new Size(685, 175);
-            SocietyAnnouncement1.TabIndex = 12;
-            // 
-            // SocietyAnnouncement1Name
-            // 
-            SocietyAnnouncement1Name.AutoSize = true;
-            SocietyAnnouncement1Name.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyAnnouncement1Name.ForeColor = Color.Black;
-            SocietyAnnouncement1Name.Location = new Point(25, 25);
-            SocietyAnnouncement1Name.Name = "SocietyAnnouncement1Name";
-            SocietyAnnouncement1Name.Size = new Size(133, 24);
-            SocietyAnnouncement1Name.TabIndex = 0;
-            SocietyAnnouncement1Name.Text = "Ibrahim Khan";
-            // 
-            // SocietyAnnouncement1Text
-            // 
-            SocietyAnnouncement1Text.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            SocietyAnnouncement1Text.Font = new Font("Inter Italic", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyAnnouncement1Text.ForeColor = Color.Black;
-            SocietyAnnouncement1Text.Location = new Point(25, 59);
-            SocietyAnnouncement1Text.Name = "SocietyAnnouncement1Text";
-            SocietyAnnouncement1Text.Size = new Size(635, 51);
-            SocietyAnnouncement1Text.TabIndex = 2;
-            SocietyAnnouncement1Text.Text = "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”";
-            // 
-            // SocietyAnnouncement1Date
-            // 
-            SocietyAnnouncement1Date.AutoSize = true;
-            SocietyAnnouncement1Date.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyAnnouncement1Date.ForeColor = Color.Gray;
-            SocietyAnnouncement1Date.Location = new Point(25, 120);
-            SocietyAnnouncement1Date.Name = "SocietyAnnouncement1Date";
-            SocietyAnnouncement1Date.Size = new Size(323, 24);
-            SocietyAnnouncement1Date.TabIndex = 3;
-            SocietyAnnouncement1Date.Text = "- Wednesday, 10th April at 23:30";
-            // 
-            // SocietyAnnouncement1Settings
-            // 
-            SocietyAnnouncement1Settings.BackgroundImage = (Image)resources.GetObject("SocietyAnnouncement1Settings.BackgroundImage");
-            SocietyAnnouncement1Settings.BackgroundImageLayout = ImageLayout.Stretch;
-            SocietyAnnouncement1Settings.Cursor = Cursors.Hand;
-            SocietyAnnouncement1Settings.Location = new Point(625, 27);
-            SocietyAnnouncement1Settings.Name = "SocietyAnnouncement1Settings";
-            SocietyAnnouncement1Settings.Size = new Size(20, 20);
-            SocietyAnnouncement1Settings.TabIndex = 14;
-            SocietyAnnouncement1Settings.TabStop = false;
+            SocietyNewAnnouncementButton.Click += OpenNewAnnouncementForm;
             // 
             // SocietyPresidentLabel
             // 
@@ -1307,9 +1252,9 @@
             SocietyPresdientText.ForeColor = Color.Black;
             SocietyPresdientText.Location = new Point(850, 246);
             SocietyPresdientText.Name = "SocietyPresdientText";
-            SocietyPresdientText.Size = new Size(50, 24);
+            SocietyPresdientText.Size = new Size(203, 24);
             SocietyPresdientText.TabIndex = 15;
-            SocietyPresdientText.Text = "BKD";
+            SocietyPresdientText.Text = "Unassigned Position";
             // 
             // SocietyPresidentUnderline
             // 
@@ -1340,6 +1285,7 @@
             SocietyNewEventButton.Size = new Size(20, 20);
             SocietyNewEventButton.TabIndex = 18;
             SocietyNewEventButton.TabStop = false;
+            SocietyNewEventButton.Click += OpenNewEventForm;
             // 
             // Event
             // 
@@ -1906,7 +1852,6 @@
             SocietyUserListPanel.BackColor = Color.Transparent;
             SocietyUserListPanel.Controls.Add(SocietyUserListSocietyName);
             SocietyUserListPanel.Controls.Add(SocietyUserListColumns);
-            SocietyUserListPanel.Controls.Add(SocietyUserListRow1);
             SocietyUserListPanel.Dock = DockStyle.Right;
             SocietyUserListPanel.Location = new Point(372, 0);
             SocietyUserListPanel.Name = "SocietyUserListPanel";
@@ -2011,94 +1956,6 @@
             SocietyUserListColumnsUnderline.Name = "SocietyUserListColumnsUnderline";
             SocietyUserListColumnsUnderline.Size = new Size(1100, 1);
             SocietyUserListColumnsUnderline.TabIndex = 16;
-            // 
-            // SocietyUserListRow1
-            // 
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column1);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column2);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column3);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column4);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column5);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Column6);
-            SocietyUserListRow1.Controls.Add(SocietyUserListRow1Underline);
-            SocietyUserListRow1.Location = new Point(85, 239);
-            SocietyUserListRow1.Name = "SocietyUserListRow1";
-            SocietyUserListRow1.Size = new Size(1100, 44);
-            SocietyUserListRow1.TabIndex = 16;
-            // 
-            // SocietyUserListRow1Column1
-            // 
-            SocietyUserListRow1Column1.AutoSize = true;
-            SocietyUserListRow1Column1.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column1.ForeColor = Color.Black;
-            SocietyUserListRow1Column1.Location = new Point(0, 0);
-            SocietyUserListRow1Column1.Name = "SocietyUserListRow1Column1";
-            SocietyUserListRow1Column1.Size = new Size(84, 24);
-            SocietyUserListRow1Column1.TabIndex = 9;
-            SocietyUserListRow1Column1.Text = "000001";
-            // 
-            // SocietyUserListRow1Column2
-            // 
-            SocietyUserListRow1Column2.AutoSize = true;
-            SocietyUserListRow1Column2.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column2.ForeColor = Color.Black;
-            SocietyUserListRow1Column2.Location = new Point(114, 0);
-            SocietyUserListRow1Column2.Name = "SocietyUserListRow1Column2";
-            SocietyUserListRow1Column2.Size = new Size(133, 24);
-            SocietyUserListRow1Column2.TabIndex = 10;
-            SocietyUserListRow1Column2.Text = "Ibrahim Khan";
-            // 
-            // SocietyUserListRow1Column3
-            // 
-            SocietyUserListRow1Column3.AutoSize = true;
-            SocietyUserListRow1Column3.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column3.ForeColor = Color.Black;
-            SocietyUserListRow1Column3.Location = new Point(280, 0);
-            SocietyUserListRow1Column3.Name = "SocietyUserListRow1Column3";
-            SocietyUserListRow1Column3.Size = new Size(186, 24);
-            SocietyUserListRow1Column3.TabIndex = 11;
-            SocietyUserListRow1Column3.Text = "i210601@nu.edu...";
-            // 
-            // SocietyUserListRow1Column4
-            // 
-            SocietyUserListRow1Column4.AutoSize = true;
-            SocietyUserListRow1Column4.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column4.ForeColor = Color.Black;
-            SocietyUserListRow1Column4.Location = new Point(491, 0);
-            SocietyUserListRow1Column4.Name = "SocietyUserListRow1Column4";
-            SocietyUserListRow1Column4.Size = new Size(19, 24);
-            SocietyUserListRow1Column4.TabIndex = 12;
-            SocietyUserListRow1Column4.Text = "-";
-            // 
-            // SocietyUserListRow1Column5
-            // 
-            SocietyUserListRow1Column5.AutoSize = true;
-            SocietyUserListRow1Column5.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column5.ForeColor = Color.Black;
-            SocietyUserListRow1Column5.Location = new Point(697, 0);
-            SocietyUserListRow1Column5.Name = "SocietyUserListRow1Column5";
-            SocietyUserListRow1Column5.Size = new Size(88, 24);
-            SocietyUserListRow1Column5.TabIndex = 13;
-            SocietyUserListRow1Column5.Text = "Member";
-            // 
-            // SocietyUserListRow1Column6
-            // 
-            SocietyUserListRow1Column6.AutoSize = true;
-            SocietyUserListRow1Column6.Font = new Font("Inter", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SocietyUserListRow1Column6.ForeColor = Color.Black;
-            SocietyUserListRow1Column6.Location = new Point(849, 0);
-            SocietyUserListRow1Column6.Name = "SocietyUserListRow1Column6";
-            SocietyUserListRow1Column6.Size = new Size(125, 24);
-            SocietyUserListRow1Column6.TabIndex = 14;
-            SocietyUserListRow1Column6.Text = "10-04-2024";
-            // 
-            // SocietyUserListRow1Underline
-            // 
-            SocietyUserListRow1Underline.BackColor = Color.LightGray;
-            SocietyUserListRow1Underline.Location = new Point(0, 43);
-            SocietyUserListRow1Underline.Name = "SocietyUserListRow1Underline";
-            SocietyUserListRow1Underline.Size = new Size(1100, 1);
-            SocietyUserListRow1Underline.TabIndex = 16;
             // 
             // TeamUserList
             // 
@@ -2611,7 +2468,6 @@
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "MainForm";
-            ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SocietySync";
             Load += MainForm_Loaded;
@@ -2636,9 +2492,6 @@
             SocietyPanel.ResumeLayout(false);
             SocietyPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)SocietyNewAnnouncementButton).EndInit();
-            SocietyAnnouncement1.ResumeLayout(false);
-            SocietyAnnouncement1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)SocietyAnnouncement1Settings).EndInit();
             ((System.ComponentModel.ISupportInitialize)SocietyNewEventButton).EndInit();
             Event.ResumeLayout(false);
             EventPanel.ResumeLayout(false);
@@ -2662,8 +2515,6 @@
             SocietyUserListPanel.PerformLayout();
             SocietyUserListColumns.ResumeLayout(false);
             SocietyUserListColumns.PerformLayout();
-            SocietyUserListRow1.ResumeLayout(false);
-            SocietyUserListRow1.PerformLayout();
             TeamUserList.ResumeLayout(false);
             TeamUserListPanel.ResumeLayout(false);
             TeamUserListPanel.PerformLayout();
@@ -2758,12 +2609,7 @@
         private Panel SocietyApplicationButton;
         private Panel SocietyUserListButton;
         private Label SocietyAnnouncementsLabel;
-        private Panel SocietyAnnouncement1;
-        private Label SocietyAnnouncement1Name;
-        private Label SocietyAnnouncement1Text;
-        private Label SocietyAnnouncement1Date;
         private PictureBox SocietyNewAnnouncementButton;
-        private PictureBox SocietyAnnouncement1Settings;
         private Label SocietyPresidentLabel;
         private Label SocietyPresdientText;
         private Panel SocietyPresidentUnderline;
@@ -2828,14 +2674,6 @@
         private Label SocietyUserListColumn6;
         private Panel SocietyUserListColumns;
         private Panel SocietyUserListColumnsUnderline;
-        private Panel SocietyUserListRow1;
-        private Label SocietyUserListRow1Column1;
-        private Label SocietyUserListRow1Column2;
-        private Label SocietyUserListRow1Column3;
-        private Label SocietyUserListRow1Column4;
-        private Label SocietyUserListRow1Column5;
-        private Label SocietyUserListRow1Column6;
-        private Panel SocietyUserListRow1Underline;
         private Panel TeamUserList;
         private Label TeamUserListHomeLink;
         private Label TeamUserListSocietiesLink;
@@ -2885,5 +2723,6 @@
         private Label EventsParticipating;
         private Label EventsNoParticipating;
         private Label EventsNoOther;
+        private Label SocietyNoAnnouncementsLabel;
     }
 }

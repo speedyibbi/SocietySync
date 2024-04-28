@@ -10,22 +10,13 @@ public static class GeneralController
 
     public static IEnumerable<dynamic> GetAnnouncementsForUser(int userId)
     {
-        string[] columns = new string[] { "Users.first_name", "Users.last_name", "Societies.name", "Announcements.text", "Announcements.created_at" };
-
-        StringBuilder columnNames = new StringBuilder();
-        foreach (var column in columns)
-        {
-            if (columnNames.Length > 0)
-                columnNames.Append(", ");
-            columnNames.Append(column);
-        }
-
-        string sql = $@"
-            SELECT {columnNames}
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+        
+        string sql = @"
+            SELECT Announcements.*, Users.first_name, Users.last_name, Societies.name
             FROM Announcements
             JOIN Users ON Announcements.user_id = Users.user_id
-            JOIN Events ON Announcements.event_id = Events.event_id
-            JOIN Societies ON Events.society_id = Societies.society_id
+            JOIN Societies ON Announcements.society_id = Societies.society_id
             JOIN Memberships ON Societies.society_id = Memberships.society_id
             WHERE Memberships.user_id = @userId;";
 
@@ -34,6 +25,8 @@ public static class GeneralController
 
     public static IEnumerable<Society> GetJoinedSocietiesForUser(int userId)
     {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         const string sql = @"
             SELECT Societies.*
             FROM Societies
@@ -45,6 +38,8 @@ public static class GeneralController
 
     public static IEnumerable<Society> GetDiscoverableSocietiesForUser(int userId)
     {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         const string sql = @"
             SELECT *
             FROM Societies
@@ -59,51 +54,86 @@ public static class GeneralController
 
     public static IEnumerable<dynamic> GetParticipatingEventsForUser(int userId)
     {
-        string[] columns = new string[] { "Events.*", "Societies.name" };
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-        StringBuilder columnNames = new StringBuilder();
-        foreach (var column in columns)
-        {
-            if (columnNames.Length > 0)
-                columnNames.Append(", ");
-            columnNames.Append(column);
-        }
-
-        string sql = $@"
-            SELECT {columnNames}
+        string sql = @"
+            SELECT Events.*, Societies.name as society_name
             FROM Events
             JOIN Societies ON Events.society_id = Societies.society_id
-            JOIN Teams ON Events.event_id = Teams.event_id
-            JOIN TeamMembers ON Teams.team_id = TeamMembers.team_id
-            WHERE TeamMembers.user_id = @userId;";
+            JOIN Memberships ON Societies.society_id = Memberships.society_id
+            WHERE Memberships.user_id = @userId;";
 
         return _connection.Query<dynamic>(sql, new { userId });
     }
 
     public static IEnumerable<dynamic> GetOtherEventsForUser(int userId)
     {
-        string[] columns = new string[] { "Events.*", "Societies.name" };
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-        StringBuilder columnNames = new StringBuilder();
-        foreach (var column in columns)
-        {
-            if (columnNames.Length > 0)
-                columnNames.Append(", ");
-            columnNames.Append(column);
-        }
-
-        string sql = $@"
-            SELECT {columnNames}
+        string sql = @"
+            SELECT Events.*, Societies.name as society_name
             FROM Events
             JOIN Societies ON Events.society_id = Societies.society_id
             WHERE event_id NOT IN (
                 SELECT Events.event_id
                 FROM Events
-                JOIN Teams ON Events.event_id = Teams.event_id
-                JOIN TeamMembers ON Teams.team_id = TeamMembers.team_id
-                WHERE TeamMembers.user_id = @userId
+                JOIN Societies ON Events.society_id = Societies.society_id
+                JOIN Memberships ON Societies.society_id = Memberships.society_id
+                WHERE Memberships.user_id = @userId
             );";
 
         return _connection.Query<dynamic>(sql, new { userId });
+    }
+
+    public static IEnumerable<dynamic> GetMembersBySocietyId(int societyId)
+    {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+        const string sql = @"
+            SELECT Users.*, Memberships.membership_id, Memberships.joined_at, UserRoles.name as role_name
+            FROM Users
+            JOIN Memberships ON Users.user_id = Memberships.user_id
+            JOIN UserRoles ON Memberships.role_id = UserRoles.role_id
+            WHERE Memberships.society_id = @societyId;";
+
+        return _connection.Query<dynamic>(sql, new { societyId });
+    }
+
+    public static IEnumerable<dynamic> GetAnnouncementsBySocietyId(int societyId)
+    {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+        const string sql = @"
+            SELECT Announcements.*, Users.user_id, Users.first_name, Users.last_name
+            FROM Announcements
+            JOIN Users ON Announcements.user_id = Users.user_id
+            JOIN Societies ON Announcements.society_id = Societies.society_id
+            WHERE Societies.society_id = @societyId;";
+
+        return _connection.Query<dynamic>(sql, new { societyId });
+    }
+
+    public static User? GetPresidentBySocietyId(int societyId)
+    {
+        DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+        const string sql = @"
+            SELECT Users.*
+            FROM Users
+            JOIN Societies ON Users.user_id = Societies.president
+            WHERE Societies.society_id = @societyId;";
+
+        return _connection.QuerySingleOrDefault<User>(sql, new { societyId });
+    }
+
+    public static UserRole? GetUserRoleInSociety(int userId, int societyId)
+    {
+        const string sql = @"
+            SELECT UserRoles.*
+            FROM Memberships
+            JOIN UserRoles ON Memberships.role_id = UserRoles.role_id
+            WHERE Memberships.user_id = @userId AND Memberships.society_id = @societyId;";
+
+        return _connection.QuerySingleOrDefault<UserRole>(sql, new { userId, societyId });
     }
 }

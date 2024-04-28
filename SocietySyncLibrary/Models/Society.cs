@@ -14,7 +14,7 @@ public class Society
     public string? Description { get; set; }
 
     [Column("president")]
-    public int? PresidentUserID { get; set; }
+    public int? President { get; set; }
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }

@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using SocietySync.User_Controls;
@@ -13,6 +14,9 @@ public partial class MainForm : Form
     //string activeScreen = "Home";
 
     User? loggedInUser = null;
+    Society? selectedSociety = null;
+    bool? selectedSocietyJoined = null;
+    dynamic? selectedEvent = null;
 
     public MainForm()
     {
@@ -39,11 +43,12 @@ public partial class MainForm : Form
             return;
         }
 
-        AdminChecks();
-
         PopulateHomeAnnouncements();
         PopulateSocieties();
         PopulateEvents();
+
+        SettingsNameLabel.Text = $"{loggedInUser.FirstName} {loggedInUser.LastName} (unchangeable)";
+        SettingsEmailLabel.Text = $"{loggedInUser.Email} (unchangeable)";
 
         SelectScreen("Home");
     }
@@ -199,26 +204,96 @@ public partial class MainForm : Form
         control.BackgroundImage = control.BackgroundImage == null ? Properties.Resources.selection : null;
     }
 
-    private void AdminChecks()
+    private string TruncateString(string str, int max)
     {
-        if (!loggedInUser!.Admin)
-        {
-            SocietiesNewSocietyButton.BackColor = Color.White;
-            SocietiesNewSocietyButton.Enabled = false;
-            
-            return;
-        }
+        if (str.Length > max) return str.Substring(0, max - 3) + "...";
+        else return str;
+    }
 
-        SocietiesNewSocietyButton.Click += (sender, e) =>
+    // Form Events
+
+    private void OpenNewSocietyForm(object sender, EventArgs e)
+    {
+        CRUDForm newSocietyForm = new CRUDForm();
+        newSocietyForm.SocietyForm.Tag = "";
+
+        List<OptionItem> dataSource = new List<OptionItem>
+            {
+                new OptionItem($"{loggedInUser!.FirstName} {loggedInUser.LastName}", loggedInUser.UserID)
+            };
+
+        newSocietyForm.SocietyFormPresidentInput.DataSource = dataSource;
+        newSocietyForm.SocietyFormPresidentInput.SelectedIndex = 0;
+        newSocietyForm.SocietyFormRemoveButton.Enabled = false;
+
+        newSocietyForm.FormClosed += (sender, e) =>
         {
-            CRUDForm newSocietyForm = new CRUDForm();
+            PopulateSocieties();
         };
+
+        newSocietyForm.activeScreen = "SocietyForm";
+        newSocietyForm.ShowDialog();
+    }
+
+    private void OpenSocietyApplicationForm(object sender, EventArgs e)
+    {
+        CRUDForm societyApplicationForm = new CRUDForm();
+        societyApplicationForm.SocietyApplication.Tag = $"{selectedSociety!.SocietyID} {loggedInUser?.UserID}";
+
+        societyApplicationForm.SocietyApplicationSocietyInput.Text = selectedSociety.Name;
+
+        societyApplicationForm.FormClosed += (sender, e) =>
+        {
+            PopulateSocieties();
+            SelectScreen("Societies");
+        };
+
+        societyApplicationForm.activeScreen = "SocietyApplication";
+        societyApplicationForm.ShowDialog();
+    }
+
+    private void OpenNewEventForm(object sender, EventArgs e)
+    {
+        CRUDForm newEventForm = new CRUDForm();
+        newEventForm.EventForm.Tag = $"{selectedSociety!.SocietyID} {loggedInUser!.UserID}";
+
+        newEventForm.EventFormRemoveButton.Enabled = false;
+
+        newEventForm.FormClosed += (sender, e) =>
+        {
+            PopulateEvents();
+        };
+
+        newEventForm.activeScreen = "EventForm";
+        newEventForm.ShowDialog();
+    }
+
+    private void OpenNewAnnouncementForm(object sender, EventArgs e)
+    {
+        CRUDForm newAnnouncementForm = new CRUDForm();
+        newAnnouncementForm.AnnouncementForm.Tag = $"{loggedInUser!.UserID} {selectedSociety!.SocietyID}";
+
+        newAnnouncementForm.AnnouncementFormRemoveButton.Enabled = false;
+
+        newAnnouncementForm.FormClosed += (sender, e) =>
+        {
+            PopulateHomeAnnouncements();
+            PopulateSelectedSociety();
+        };
+
+        newAnnouncementForm.activeScreen = "AnnouncementForm";
+        newAnnouncementForm.ShowDialog();
     }
 
     // Populants
 
     private void PopulateHomeAnnouncements()
     {
+        foreach (Control control in HomePanel.Controls.OfType<TemplateAnnouncement>())
+        {
+            HomePanel.Controls.Remove(control);
+        }
+
         IEnumerable<dynamic> announcements = GeneralController.GetAnnouncementsForUser(loggedInUser!.UserID);
 
         if (announcements.IsNullOrEmpty())
@@ -226,6 +301,10 @@ public partial class MainForm : Form
             HomeAnnouncementsLabel.Visible = false;
             HomeNoAnnouncementsLabel.Visible = true;
             return;
+        } else
+        {
+            HomeAnnouncementsLabel.Visible = true;
+            HomeNoAnnouncementsLabel.Visible = false;
         }
 
         int idx = 0;
@@ -235,7 +314,7 @@ public partial class MainForm : Form
             templateAnnouncement.AnnouncementName = $"{announcement.first_name} {announcement.last_name}";
             templateAnnouncement.AnnouncementSociety = announcement.name;
             templateAnnouncement.AnnouncementText = announcement.text;
-            templateAnnouncement.AnnouncementDate = announcement.created_at;
+            templateAnnouncement.AnnouncementDate = announcement.created_at.ToString("D");
             templateAnnouncement.Location = new Point(63, 246 + (idx * 175));
             HomePanel.Controls.Add(templateAnnouncement);
             ++idx;
@@ -244,6 +323,11 @@ public partial class MainForm : Form
 
     private void PopulateSocieties()
     {
+        foreach (Control control in SocietiesPanel.Controls.OfType<TemplateSociety>())
+        {
+            SocietiesPanel.Controls.Remove(control);
+        }
+
         IEnumerable<Society> societies = GeneralController.GetJoinedSocietiesForUser(loggedInUser!.UserID);
 
         Point discoverLocation = new Point(85, 271);
@@ -255,12 +339,61 @@ public partial class MainForm : Form
             {
                 TemplateSociety templateSociety = new TemplateSociety();
                 templateSociety.SocietyName = society.Name == null ? string.Empty : society.Name;
-                // todo: click event for settings
+
+                templateSociety.TemplateSocietyClicked += (sender, e) =>
+                {
+                    selectedSociety = society;
+                    selectedSocietyJoined = true;
+                    PopulateSelectedSociety();
+                    SelectScreen("Society");
+                };
+
+                if (society.President == loggedInUser.UserID)
+                {
+                    templateSociety.TemplateSocietySettingsClicked += (sender, e) =>
+                    {
+                        IEnumerable<dynamic> members = GeneralController.GetMembersBySocietyId(society.SocietyID);
+                        
+                        CRUDForm updateSocietyForm = new CRUDForm();
+                        updateSocietyForm.SocietyForm.Tag = society.SocietyID;
+                        
+                        List<OptionItem> dataSource = new List<OptionItem>();
+                        int idx = 0;
+                        int count = 0;
+                        foreach (dynamic member in members)
+                        {
+                            if (member.user_id.Equals(society.President)) idx = count;
+                            dataSource.Add(new OptionItem($"{member.first_name} {member.last_name}", member.user_id));
+                            count++;
+                        }
+
+                        updateSocietyForm.SocietyFormNameInput.Text = society.Name;
+                        updateSocietyForm.SocietyFormDescriptionInput.Text = society.Description;
+                        updateSocietyForm.SocietyFormPresidentInput.DataSource = dataSource;
+                        updateSocietyForm.SocietyFormPresidentInput.SelectedIndex = idx;
+
+                        updateSocietyForm.FormClosed += (sender, e) =>
+                        {
+                            PopulateSocieties();
+                        };
+
+                        updateSocietyForm.activeScreen = "SocietyForm";
+                        updateSocietyForm.ShowDialog();
+                    };
+                } else
+                {
+                    templateSociety.hideSettings = true;
+                }
+
+                templateSociety.UpdateFunctions();
                 templateSociety.Location = new Point(idx % 2 == 0 ? 63 : 373, 246 + ((idx / 2) * 241));
                 discoverLocation = new Point(85, 537 + ((idx / 2) * 241));
                 SocietiesPanel.Controls.Add(templateSociety);
                 ++idx;
             }
+
+            SocietiesJoinedLabel.Visible = true;
+            SocietiesNoJoinedLabel.Visible = false;
         } else
         {
             SocietiesJoinedLabel.Visible = false;
@@ -279,11 +412,24 @@ public partial class MainForm : Form
             {
                 TemplateSociety templateSociety = new TemplateSociety();
                 templateSociety.SocietyName = society.Name == null ? string.Empty : society.Name;
-                // todo: click event for settings
+
+                templateSociety.TemplateSocietyClicked += (sender, e) =>
+                {
+                    selectedSociety = society;
+                    selectedSocietyJoined = false;
+                    PopulateSelectedSociety();
+                    SelectScreen("Society");
+                };
+
+                templateSociety.hideSettings = true;
+                templateSociety.UpdateFunctions();
                 templateSociety.Location = new Point(idx % 2 == 0 ? 63 : 373, discoverLocation.Y + 86 + ((idx / 2) * 241));
                 SocietiesPanel.Controls.Add(templateSociety);
                 ++idx;
             }
+
+            SocietiesDiscoverLabel.Visible = true;
+            SocietiesNoDiscoverLabel.Visible = false;
         }
         else
         {
@@ -294,6 +440,11 @@ public partial class MainForm : Form
 
     private void PopulateEvents()
     {
+        foreach (Control control in EventsPanel.Controls.OfType<TemplateEvent>())
+        {
+            EventsPanel.Controls.Remove(control);
+        }
+
         IEnumerable<dynamic> events = GeneralController.GetParticipatingEventsForUser(loggedInUser!.UserID);
 
         Point otherLocation = new Point(85, 271);
@@ -301,18 +452,67 @@ public partial class MainForm : Form
         if (!events.IsNullOrEmpty())
         {
             int idx = 0;
-            foreach (dynamic e in events)
+            foreach (dynamic ev in events)
             {
                 TemplateEvent templateEvent = new TemplateEvent();
-                templateEvent.EventName = e.Title == null ? string.Empty : e.Title;
-                templateEvent.EventText = e.Description == null ? string.Empty : e.Description;
-                templateEvent.EventSociety = e.SocietyName == null ? string.Empty : e.SocietyName;
-                // todo: click event for settings
+                templateEvent.TemplateEventClicked += (sender, e) =>
+                {
+                    selectedEvent = e;
+                    //selectedEventJoined = true;
+                    //PopulateSelectedEvent();
+                    SelectScreen("Event");
+                };
+
+                templateEvent.EventName = ev.title ?? string.Empty;
+                templateEvent.EventText = $"\"{ev.description}\"" ?? string.Empty;
+                templateEvent.EventSociety = $"- {ev.society_name}" ?? string.Empty;
+
+                if (ev.created_by == loggedInUser.UserID)
+                {
+                    templateEvent.TemplateEventSettingsClicked += (sender, e) =>
+                    {
+                        Event ev_ = EventController.Find(ev.event_id)!;
+
+                        //CRUDForm updateSocietyForm = new CRUDForm();
+                        //updateSocietyForm.SocietyForm.Tag = society.SocietyID;
+
+                        //List<OptionItem> dataSource = new List<OptionItem>();
+                        //int idx = 0;
+                        //int count = 0;
+                        //foreach (dynamic member in members)
+                        //{
+                        //    if (member.user_id.Equals(society.President)) idx = count;
+                        //    dataSource.Add(new OptionItem($"{member.first_name} {member.last_name}", member.user_id));
+                        //    count++;
+                        //}
+
+                        //updateSocietyForm.SocietyFormNameInput.Text = society.Name;
+                        //updateSocietyForm.SocietyFormDescriptionInput.Text = society.Description;
+                        //updateSocietyForm.SocietyFormPresidentInput.DataSource = dataSource;
+                        //updateSocietyForm.SocietyFormPresidentInput.SelectedIndex = idx;
+
+                        //updateSocietyForm.FormClosed += (sender, e) =>
+                        //{
+                        //    PopulateSocieties();
+                        //};
+
+                        //updateSocietyForm.activeScreen = "SocietyForm";
+                        //updateSocietyForm.ShowDialog();
+                    };
+                } else
+                {
+                    templateEvent.hideSettings = true;
+                }
+
+                templateEvent.UpdateFunctions();
                 templateEvent.Location = new Point(63, 246 + (idx * 181));
                 otherLocation = new Point(85, 477 + (idx * 181));
                 EventsPanel.Controls.Add(templateEvent);
                 ++idx;
             }
+
+            EventsParticipating.Visible = true;
+            EventsNoParticipating.Visible = false;
         }
         else
         {
@@ -328,22 +528,198 @@ public partial class MainForm : Form
         if (!events.IsNullOrEmpty())
         {
             int idx = 0;
-            foreach (dynamic e in events)
+            foreach (dynamic ev in events)
             {
                 TemplateEvent templateEvent = new TemplateEvent();
-                templateEvent.EventName = e.Title == null ? string.Empty : e.Title;
-                templateEvent.EventText = e.Description == null ? string.Empty : e.Description;
-                templateEvent.EventSociety = e.SocietyName == null ? string.Empty : e.SocietyName;
-                // todo: click event for settings
+                templateEvent.EventName = ev.title ?? string.Empty;
+                templateEvent.EventText = $"\"{ev.description}\"" ?? string.Empty;
+                templateEvent.EventSociety = $"- {ev.society_name}" ?? string.Empty;
+                //todo
+                templateEvent.UpdateFunctions();
                 templateEvent.Location = new Point(63, otherLocation.Y + 86 + (idx * 181));
                 EventsPanel.Controls.Add(templateEvent);
                 ++idx;
             }
+
+            EventsOther.Visible = true;
+            EventsNoOther.Visible = false;
         }
         else
         {
             EventsOther.Visible = false;
             EventsNoOther.Visible = true;
+        }
+    }
+
+    private void PopulateSelectedSociety()
+    {
+        if (selectedSociety == null) return;
+
+        SocietyName.Text = $"| {selectedSociety.Name}";
+        SocietyDescriptionText.Text = $"\"{selectedSociety.Description}\"" ;
+
+        foreach (Control control in SocietyPanel.Controls.OfType<TemplateAnnouncement>())
+        {
+            SocietyPanel.Controls.Remove(control);
+        }
+
+        UserRole? role = GeneralController.GetUserRoleInSociety(loggedInUser!.UserID, selectedSociety.SocietyID);
+
+        if (selectedSocietyJoined == null || selectedSocietyJoined == false || role == null || role.Name!.Equals("Pending"))
+        {
+            SocietyNewAnnouncementButton.Visible = false;
+            SocietyUserListButton.Enabled = false;
+            SocietyUserListButton.BackColor = Color.White;
+
+            if (role == null)
+            {
+                SocietyApplicationButton.Enabled = true;
+                SocietyApplicationButton.BackColor = Color.Transparent;
+            } else
+            {
+                SocietyApplicationButton.Enabled = false;
+                SocietyApplicationButton.BackColor = Color.White;
+            }
+        } else
+        {
+            SocietyNewAnnouncementButton.Visible = true;
+            SocietyUserListButton.Enabled = true;
+            SocietyUserListButton.BackColor = Color.Transparent;
+            SocietyApplicationButton.Enabled = false;
+            SocietyApplicationButton.BackColor = Color.White;
+
+            PopulateSelectedSocietyUserList();
+        }
+
+        IEnumerable<dynamic> announcements = GeneralController.GetAnnouncementsBySocietyId(selectedSociety.SocietyID);
+
+        if (announcements.IsNullOrEmpty())
+        {
+            SocietyAnnouncementsLabel.Visible = false;
+            SocietyNoAnnouncementsLabel.Visible = true;
+            SocietyNewAnnouncementButton.Location = new Point(SocietyNoAnnouncementsLabel.Location.X + SocietyNoAnnouncementsLabel.Size.Width + 25, SocietyNoAnnouncementsLabel.Location.Y + 8);
+        } else
+        {
+            SocietyAnnouncementsLabel.Visible = true;
+            SocietyNoAnnouncementsLabel.Visible = false;
+        }
+
+        int idx = 0;
+        foreach (dynamic announcement in announcements)
+        {
+            TemplateAnnouncement templateAnnouncement = new TemplateAnnouncement();
+            templateAnnouncement.AnnouncementName = $"{announcement.first_name} {announcement.last_name}";
+            templateAnnouncement.AnnouncementSociety = string.Empty;
+            templateAnnouncement.AnnouncementText = announcement.text;
+            templateAnnouncement.AnnouncementDate = announcement.created_at.ToString("D");
+            templateAnnouncement.Location = new Point(63, 457 + (idx * 175));
+            SocietyPanel.Controls.Add(templateAnnouncement);
+            ++idx;
+        }
+
+        User? president = GeneralController.GetPresidentBySocietyId(selectedSociety.SocietyID);
+
+        if (president != null)
+        {
+            SocietyPresdientText.Text = $"{president.FirstName} {president.LastName}";
+
+            if (president.UserID != loggedInUser?.UserID)
+            {
+                SocietyNewEventButton.Visible = false;
+            } else
+            {
+                SocietyNewEventButton.Visible = true;
+            }
+        } else
+        {
+            SocietyNewEventButton.Visible = false;
+        }
+    }
+
+    private void PopulateSelectedSocietyUserList()
+    {
+        if (selectedSociety == null) return;
+
+        SocietyUserListSocietyName.Text = $"| {selectedSociety.Name}";
+
+        foreach (Control control in SocietyUserListPanel.Controls.OfType<TemplateListedUser>())
+        {
+            SocietyUserListPanel.Controls.Remove(control);
+        }
+
+        UserRole role = GeneralController.GetUserRoleInSociety(loggedInUser!.UserID, selectedSociety.SocietyID)!;
+
+        IEnumerable<dynamic> members = GeneralController.GetMembersBySocietyId(selectedSociety.SocietyID);
+
+        int idx = 0;
+        foreach (dynamic member in members)
+        {
+            TemplateListedUser templateListedUser = new TemplateListedUser();
+            templateListedUser.ListedUserId = member.membership_id.ToString().PadLeft(6, '0');
+            templateListedUser.ListedUserName = TruncateString($"{member.first_name} {member.last_name}", 15);
+            templateListedUser.ListedUserEmail = TruncateString(member.email!, 15);
+            templateListedUser.ListedUserPhoneNumber = TruncateString(member.PhoneNumber ?? "-", 15);
+            templateListedUser.ListedUserRole = member.role_name;
+            templateListedUser.ListedUserJoinedAt = member.joined_at.ToString("D");
+
+            if (role.Name!.Equals("President") || role.Name!.Equals("Executive"))
+            {
+                if (member.role_name.Equals("President"))
+                {
+                    templateListedUser.UpdateFunctions();
+                    templateListedUser.Location = new Point(85, 239 + (idx * 64));
+                    SocietyUserListPanel.Controls.Add(templateListedUser);
+                    ++idx;
+                    continue;
+                }
+
+                if (member.role_name.Equals("Executive"))
+                {
+                    if (role.Name!.Equals("Executive"))
+                    {
+                        templateListedUser.UpdateFunctions();
+                        templateListedUser.Location = new Point(85, 239 + (idx * 64));
+                        SocietyUserListPanel.Controls.Add(templateListedUser);
+                        ++idx;
+                        continue;
+                    }
+                }
+
+                templateListedUser.TemplateListedUserClicked += (sender, e) =>
+                {
+                    IEnumerable<UserRole> roles = UserRoleController.FindAll().Where(role => !role.Name!.Equals("Head") && !role.Name!.Equals("President"));
+
+                    CRUDForm updateListedUserForm = new CRUDForm();
+                    updateListedUserForm.SocietyMemberForm.Tag = member.membership_id;
+
+                    List<OptionItem> dataSource = new List<OptionItem>();
+                    int idx_i = 0;
+                    int count = 0;
+                    foreach (UserRole role in roles)
+                    {
+                        if (role.Name!.Equals(member.role_name)) idx_i = count;
+                        dataSource.Add(new OptionItem(role.Name, role.RoleID));
+                        count++;
+                    }
+
+                    updateListedUserForm.SocietyMemberFormRoleInput.DataSource = dataSource;
+                    updateListedUserForm.SocietyMemberFormRoleInput.SelectedIndex = idx_i;
+
+                    updateListedUserForm.FormClosed += (sender, e) =>
+                    {
+                        PopulateSelectedSociety();
+                        SelectScreen("Society");
+                    };
+
+                    updateListedUserForm.activeScreen = "SocietyMemberForm";
+                    updateListedUserForm.ShowDialog();
+                };
+            }
+
+            templateListedUser.UpdateFunctions();
+            templateListedUser.Location = new Point(85, 239 + (idx * 64));
+            SocietyUserListPanel.Controls.Add(templateListedUser);
+            ++idx;
         }
     }
 }

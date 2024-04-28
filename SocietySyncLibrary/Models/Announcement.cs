@@ -8,10 +8,13 @@ public class Announcement
     public int AnnouncementID { get; set; } = -1;
 
     [Column("user_id")]
-    public int UserID { get; set; } = -1;
+    public int? UserID { get; set; }
+
+    [Column("society_id")]
+    public int? SocietyID { get; set; }
 
     [Column("event_id")]
-    public int EventID { get; set; } = -1;
+    public int? EventID { get; set; }
 
     [Column("text")]
     public string? Text { get; set; }

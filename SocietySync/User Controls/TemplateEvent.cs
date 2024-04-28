@@ -67,19 +67,23 @@ namespace SocietySync.User_Controls
             InitializeComponent();
 
             Size = new Size(685, 181);
-
+        }
+        public void UpdateFunctions()
+        {
             Click += (sender, e) => TemplateEventClicked?.Invoke(this, EventArgs.Empty);
             TemplateEventName.Click += (sender, e) => TemplateEventClicked?.Invoke(this, EventArgs.Empty);
             TemplateEventText.Click += (sender, e) => TemplateEventClicked?.Invoke(this, EventArgs.Empty);
             TemplateEventSociety.Click += (sender, e) => TemplateEventClicked?.Invoke(this, EventArgs.Empty);
-            
+
             if (!hideSettings)
             {
                 TemplateEventSettingsButton.Click += (sender, e) => TemplateEventSettingsClicked?.Invoke(this, EventArgs.Empty);
-            } else
+            }
+            else
             {
                 TemplateEventSettingsButton.Visible = false;
             }
         }
+
     }
 }

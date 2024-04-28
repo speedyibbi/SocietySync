@@ -11,9 +11,10 @@ public static class AnnouncementController
     {
         try
         {
-            const string insertSql = "INSERT INTO Announcements (user_id, event_id, text, created_at) VALUES (@userId, @eventId, @text, @createdAt)";
+            const string insertSql = "INSERT INTO Announcements (user_id, society_id, event_id, text, created_at) VALUES (@userId, @societyId, @eventId, @text, @createdAt)";
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@userId", announcement.UserID);
+            parameters.Add("@societyId", announcement.SocietyID);
             parameters.Add("@eventId", announcement.EventID);
             parameters.Add("@text", announcement.Text);
             parameters.Add("@createdAt", DateTime.UtcNow);
@@ -50,10 +51,11 @@ public static class AnnouncementController
 
     public static bool Update(Announcement announcement)
     {
-        const string sql = "UPDATE Announcements SET user_id = @userId, event_id = @eventId, text = @text, created_at = @createdAt WHERE announcement_id = @announcementId";
+        const string sql = "UPDATE Announcements SET user_id = @userId, society_id = @societyId, event_id = @eventId, text = @text, created_at = @createdAt WHERE announcement_id = @announcementId";
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add("@announcementId", announcement.AnnouncementID);
         parameters.Add("@userId", announcement.UserID);
+        parameters.Add("@societyId", announcement.SocietyID);
         parameters.Add("@eventId", announcement.EventID);
         parameters.Add("@text", announcement.Text);
         parameters.Add("@createdAt", announcement.CreatedAt);

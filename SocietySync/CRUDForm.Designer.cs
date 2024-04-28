@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CRUDForm));
             SocietyForm = new Panel();
             SocietyFormNameLabel = new Label();
@@ -36,6 +37,7 @@
             SocietyFormDescriptionInput = new TextBox();
             SocietyFormPresidentLabel = new Label();
             SocietyFormPresidentInput = new ComboBox();
+            optionItemBindingSource = new BindingSource(components);
             SocietyFormRemoveButton = new Label();
             SocietyFormCancelButton = new Label();
             SocietyFormSaveButton = new Label();
@@ -52,9 +54,9 @@
             EventFormDescriptionLabel = new Label();
             EventFormDescriptionInput = new TextBox();
             EventFormStartDateLabel = new Label();
-            EventFormStartDateInput = new TextBox();
+            EventFormStartDateInput = new DateTimePicker();
             EventFormEndDateLabel = new Label();
-            EventFormEndDateInput = new TextBox();
+            EventFormEndDateInput = new DateTimePicker();
             EventFormLocationLabel = new Label();
             EventFormLocationInput = new TextBox();
             EventFormRemoveButton = new Label();
@@ -77,17 +79,17 @@
             TaskFormDescriptionInput = new TextBox();
             TaskFormAssigneeLabel = new Label();
             TaskFormAssigneeInput = new ComboBox();
+            TaskFormCompletedLabel = new Label();
+            TaskFormCompletedInput = new ComboBox();
             TaskFormRemoveButton = new Label();
             TaskFormCancelButton = new Label();
             TaskFormSaveButton = new Label();
-            TaskFormCompletedLabel = new Label();
-            TaskFormCompletedInput = new ComboBox();
             SocietyMemberForm = new Panel();
+            SocietyMemberFormRoleLabel = new Label();
             SocietyMemberFormRoleInput = new ComboBox();
             SocietyMemberFormRemoveButton = new Label();
             SocietyMemberFormCancelButton = new Label();
             SocietyMemberFormSaveButton = new Label();
-            SocietyMemberFormRoleLabel = new Label();
             TeamMemberForm = new Panel();
             TeamMemberFormRoleLabel = new Label();
             TeamMemberFormRoleInput = new ComboBox();
@@ -101,6 +103,7 @@
             AnnouncementFormCancelButton = new Label();
             AnnouncementFormSaveButton = new Label();
             SocietyForm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)optionItemBindingSource).BeginInit();
             SocietyApplication.SuspendLayout();
             EventForm.SuspendLayout();
             TeamForm.SuspendLayout();
@@ -128,7 +131,6 @@
             SocietyForm.Name = "SocietyForm";
             SocietyForm.Size = new Size(462, 673);
             SocietyForm.TabIndex = 0;
-            SocietyForm.Visible = false;
             // 
             // SocietyFormNameLabel
             // 
@@ -185,6 +187,7 @@
             // SocietyFormPresidentInput
             // 
             SocietyFormPresidentInput.BackColor = Color.White;
+            SocietyFormPresidentInput.DataSource = optionItemBindingSource;
             SocietyFormPresidentInput.FlatStyle = FlatStyle.Flat;
             SocietyFormPresidentInput.ForeColor = Color.Black;
             SocietyFormPresidentInput.FormattingEnabled = true;
@@ -192,6 +195,10 @@
             SocietyFormPresidentInput.Name = "SocietyFormPresidentInput";
             SocietyFormPresidentInput.Size = new Size(360, 24);
             SocietyFormPresidentInput.TabIndex = 16;
+            // 
+            // optionItemBindingSource
+            // 
+            optionItemBindingSource.DataSource = typeof(OptionItem);
             // 
             // SocietyFormRemoveButton
             // 
@@ -201,6 +208,7 @@
             SocietyFormRemoveButton.Name = "SocietyFormRemoveButton";
             SocietyFormRemoveButton.Size = new Size(360, 37);
             SocietyFormRemoveButton.TabIndex = 17;
+            SocietyFormRemoveButton.Click += RemoveSociety;
             // 
             // SocietyFormCancelButton
             // 
@@ -210,6 +218,7 @@
             SocietyFormCancelButton.Name = "SocietyFormCancelButton";
             SocietyFormCancelButton.Size = new Size(164, 37);
             SocietyFormCancelButton.TabIndex = 18;
+            SocietyFormCancelButton.Click += CloseForm;
             // 
             // SocietyFormSaveButton
             // 
@@ -219,6 +228,7 @@
             SocietyFormSaveButton.Name = "SocietyFormSaveButton";
             SocietyFormSaveButton.Size = new Size(164, 37);
             SocietyFormSaveButton.TabIndex = 19;
+            SocietyFormSaveButton.Click += SaveSociety;
             // 
             // SocietyApplication
             // 
@@ -235,7 +245,6 @@
             SocietyApplication.Name = "SocietyApplication";
             SocietyApplication.Size = new Size(462, 673);
             SocietyApplication.TabIndex = 1;
-            SocietyApplication.Visible = false;
             // 
             // SocietyApplicationSocietyLabel
             // 
@@ -250,6 +259,7 @@
             // SocietyApplicationSocietyInput
             // 
             SocietyApplicationSocietyInput.BorderStyle = BorderStyle.None;
+            SocietyApplicationSocietyInput.Enabled = false;
             SocietyApplicationSocietyInput.Font = new Font("Inter", 10.1999989F, FontStyle.Regular, GraphicsUnit.Point);
             SocietyApplicationSocietyInput.ForeColor = Color.Black;
             SocietyApplicationSocietyInput.Location = new Point(52, 233);
@@ -287,6 +297,7 @@
             SocietyApplicationCancelButton.Name = "SocietyApplicationCancelButton";
             SocietyApplicationCancelButton.Size = new Size(164, 37);
             SocietyApplicationCancelButton.TabIndex = 18;
+            SocietyApplicationCancelButton.Click += CloseForm;
             // 
             // SocietyApplicationApplyButton
             // 
@@ -296,6 +307,7 @@
             SocietyApplicationApplyButton.Name = "SocietyApplicationApplyButton";
             SocietyApplicationApplyButton.Size = new Size(164, 37);
             SocietyApplicationApplyButton.TabIndex = 19;
+            SocietyApplicationApplyButton.Click += ApplyToSociety;
             // 
             // EventForm
             // 
@@ -319,7 +331,6 @@
             EventForm.Name = "EventForm";
             EventForm.Size = new Size(462, 673);
             EventForm.TabIndex = 2;
-            EventForm.Visible = false;
             // 
             // EventFormTitleLabel
             // 
@@ -375,14 +386,10 @@
             // 
             // EventFormStartDateInput
             // 
-            EventFormStartDateInput.BorderStyle = BorderStyle.None;
-            EventFormStartDateInput.Font = new Font("Inter", 10.1999989F, FontStyle.Regular, GraphicsUnit.Point);
-            EventFormStartDateInput.ForeColor = Color.Black;
             EventFormStartDateInput.Location = new Point(52, 374);
-            EventFormStartDateInput.Margin = new Padding(3, 2, 3, 2);
             EventFormStartDateInput.Name = "EventFormStartDateInput";
-            EventFormStartDateInput.Size = new Size(160, 21);
-            EventFormStartDateInput.TabIndex = 21;
+            EventFormStartDateInput.Size = new Size(160, 23);
+            EventFormStartDateInput.TabIndex = 27;
             // 
             // EventFormEndDateLabel
             // 
@@ -396,14 +403,10 @@
             // 
             // EventFormEndDateInput
             // 
-            EventFormEndDateInput.BorderStyle = BorderStyle.None;
-            EventFormEndDateInput.Font = new Font("Inter", 10.1999989F, FontStyle.Regular, GraphicsUnit.Point);
-            EventFormEndDateInput.ForeColor = Color.Black;
             EventFormEndDateInput.Location = new Point(249, 374);
-            EventFormEndDateInput.Margin = new Padding(3, 2, 3, 2);
             EventFormEndDateInput.Name = "EventFormEndDateInput";
-            EventFormEndDateInput.Size = new Size(160, 21);
-            EventFormEndDateInput.TabIndex = 22;
+            EventFormEndDateInput.Size = new Size(160, 23);
+            EventFormEndDateInput.TabIndex = 28;
             // 
             // EventFormLocationLabel
             // 
@@ -434,6 +437,7 @@
             EventFormRemoveButton.Name = "EventFormRemoveButton";
             EventFormRemoveButton.Size = new Size(360, 37);
             EventFormRemoveButton.TabIndex = 20;
+            EventFormRemoveButton.Click += RemoveEvent;
             // 
             // EventFormCancelButton
             // 
@@ -443,6 +447,7 @@
             EventFormCancelButton.Name = "EventFormCancelButton";
             EventFormCancelButton.Size = new Size(164, 37);
             EventFormCancelButton.TabIndex = 18;
+            EventFormCancelButton.Click += CloseForm;
             // 
             // EventFormSaveButton
             // 
@@ -452,6 +457,7 @@
             EventFormSaveButton.Name = "EventFormSaveButton";
             EventFormSaveButton.Size = new Size(164, 37);
             EventFormSaveButton.TabIndex = 19;
+            EventFormSaveButton.Click += SaveEvent;
             // 
             // TeamForm
             // 
@@ -471,7 +477,6 @@
             TeamForm.Name = "TeamForm";
             TeamForm.Size = new Size(462, 673);
             TeamForm.TabIndex = 3;
-            TeamForm.Visible = false;
             // 
             // TeamFormNameLabel
             // 
@@ -553,6 +558,7 @@
             TeamFormCancelButton.Name = "TeamFormCancelButton";
             TeamFormCancelButton.Size = new Size(164, 37);
             TeamFormCancelButton.TabIndex = 18;
+            TeamFormCancelButton.Click += CloseForm;
             // 
             // TeamFormSaveButton
             // 
@@ -583,7 +589,6 @@
             TaskForm.Name = "TaskForm";
             TaskForm.Size = new Size(462, 673);
             TaskForm.TabIndex = 4;
-            TaskForm.Visible = false;
             // 
             // TaskFormTitleLabel
             // 
@@ -648,33 +653,6 @@
             TaskFormAssigneeInput.Size = new Size(360, 24);
             TaskFormAssigneeInput.TabIndex = 16;
             // 
-            // TaskFormRemoveButton
-            // 
-            TaskFormRemoveButton.BackColor = Color.Transparent;
-            TaskFormRemoveButton.Cursor = Cursors.Hand;
-            TaskFormRemoveButton.Location = new Point(52, 521);
-            TaskFormRemoveButton.Name = "TaskFormRemoveButton";
-            TaskFormRemoveButton.Size = new Size(360, 37);
-            TaskFormRemoveButton.TabIndex = 17;
-            // 
-            // TaskFormCancelButton
-            // 
-            TaskFormCancelButton.BackColor = Color.Transparent;
-            TaskFormCancelButton.Cursor = Cursors.Hand;
-            TaskFormCancelButton.Location = new Point(52, 589);
-            TaskFormCancelButton.Name = "TaskFormCancelButton";
-            TaskFormCancelButton.Size = new Size(164, 37);
-            TaskFormCancelButton.TabIndex = 18;
-            // 
-            // TaskFormSaveButton
-            // 
-            TaskFormSaveButton.BackColor = Color.Transparent;
-            TaskFormSaveButton.Cursor = Cursors.Hand;
-            TaskFormSaveButton.Location = new Point(248, 589);
-            TaskFormSaveButton.Name = "TaskFormSaveButton";
-            TaskFormSaveButton.Size = new Size(164, 37);
-            TaskFormSaveButton.TabIndex = 19;
-            // 
             // TaskFormCompletedLabel
             // 
             TaskFormCompletedLabel.AutoSize = true;
@@ -696,6 +674,34 @@
             TaskFormCompletedInput.Size = new Size(360, 24);
             TaskFormCompletedInput.TabIndex = 21;
             // 
+            // TaskFormRemoveButton
+            // 
+            TaskFormRemoveButton.BackColor = Color.Transparent;
+            TaskFormRemoveButton.Cursor = Cursors.Hand;
+            TaskFormRemoveButton.Location = new Point(52, 521);
+            TaskFormRemoveButton.Name = "TaskFormRemoveButton";
+            TaskFormRemoveButton.Size = new Size(360, 37);
+            TaskFormRemoveButton.TabIndex = 17;
+            // 
+            // TaskFormCancelButton
+            // 
+            TaskFormCancelButton.BackColor = Color.Transparent;
+            TaskFormCancelButton.Cursor = Cursors.Hand;
+            TaskFormCancelButton.Location = new Point(52, 589);
+            TaskFormCancelButton.Name = "TaskFormCancelButton";
+            TaskFormCancelButton.Size = new Size(164, 37);
+            TaskFormCancelButton.TabIndex = 18;
+            TaskFormCancelButton.Click += CloseForm;
+            // 
+            // TaskFormSaveButton
+            // 
+            TaskFormSaveButton.BackColor = Color.Transparent;
+            TaskFormSaveButton.Cursor = Cursors.Hand;
+            TaskFormSaveButton.Location = new Point(248, 589);
+            TaskFormSaveButton.Name = "TaskFormSaveButton";
+            TaskFormSaveButton.Size = new Size(164, 37);
+            TaskFormSaveButton.TabIndex = 19;
+            // 
             // SocietyMemberForm
             // 
             SocietyMemberForm.BackgroundImage = (Image)resources.GetObject("SocietyMemberForm.BackgroundImage");
@@ -710,7 +716,16 @@
             SocietyMemberForm.Name = "SocietyMemberForm";
             SocietyMemberForm.Size = new Size(462, 673);
             SocietyMemberForm.TabIndex = 5;
-            SocietyMemberForm.Visible = false;
+            // 
+            // SocietyMemberFormRoleLabel
+            // 
+            SocietyMemberFormRoleLabel.AutoSize = true;
+            SocietyMemberFormRoleLabel.ForeColor = Color.Gray;
+            SocietyMemberFormRoleLabel.Location = new Point(52, 216);
+            SocietyMemberFormRoleLabel.Name = "SocietyMemberFormRoleLabel";
+            SocietyMemberFormRoleLabel.Size = new Size(34, 16);
+            SocietyMemberFormRoleLabel.TabIndex = 15;
+            SocietyMemberFormRoleLabel.Text = "Role";
             // 
             // SocietyMemberFormRoleInput
             // 
@@ -731,6 +746,7 @@
             SocietyMemberFormRemoveButton.Name = "SocietyMemberFormRemoveButton";
             SocietyMemberFormRemoveButton.Size = new Size(360, 37);
             SocietyMemberFormRemoveButton.TabIndex = 17;
+            SocietyMemberFormRemoveButton.Click += RemoveSocietyMember;
             // 
             // SocietyMemberFormCancelButton
             // 
@@ -740,6 +756,7 @@
             SocietyMemberFormCancelButton.Name = "SocietyMemberFormCancelButton";
             SocietyMemberFormCancelButton.Size = new Size(164, 37);
             SocietyMemberFormCancelButton.TabIndex = 18;
+            SocietyMemberFormCancelButton.Click += CloseForm;
             // 
             // SocietyMemberFormSaveButton
             // 
@@ -749,16 +766,7 @@
             SocietyMemberFormSaveButton.Name = "SocietyMemberFormSaveButton";
             SocietyMemberFormSaveButton.Size = new Size(164, 37);
             SocietyMemberFormSaveButton.TabIndex = 19;
-            // 
-            // SocietyMemberFormRoleLabel
-            // 
-            SocietyMemberFormRoleLabel.AutoSize = true;
-            SocietyMemberFormRoleLabel.ForeColor = Color.Gray;
-            SocietyMemberFormRoleLabel.Location = new Point(52, 216);
-            SocietyMemberFormRoleLabel.Name = "SocietyMemberFormRoleLabel";
-            SocietyMemberFormRoleLabel.Size = new Size(34, 16);
-            SocietyMemberFormRoleLabel.TabIndex = 15;
-            SocietyMemberFormRoleLabel.Text = "Role";
+            SocietyMemberFormSaveButton.Click += SaveSocietyMember;
             // 
             // TeamMemberForm
             // 
@@ -774,7 +782,6 @@
             TeamMemberForm.Name = "TeamMemberForm";
             TeamMemberForm.Size = new Size(462, 673);
             TeamMemberForm.TabIndex = 6;
-            TeamMemberForm.Visible = false;
             // 
             // TeamMemberFormRoleLabel
             // 
@@ -814,6 +821,7 @@
             TeamMemberFormCancelButton.Name = "TeamMemberFormCancelButton";
             TeamMemberFormCancelButton.Size = new Size(164, 37);
             TeamMemberFormCancelButton.TabIndex = 18;
+            TeamMemberFormCancelButton.Click += CloseForm;
             // 
             // TeamMemberFormSaveButton
             // 
@@ -838,7 +846,6 @@
             AnnouncementForm.Name = "AnnouncementForm";
             AnnouncementForm.Size = new Size(462, 673);
             AnnouncementForm.TabIndex = 7;
-            AnnouncementForm.Visible = false;
             // 
             // AnnouncementFormTextLabel
             // 
@@ -869,6 +876,7 @@
             AnnouncementFormRemoveButton.Name = "AnnouncementFormRemoveButton";
             AnnouncementFormRemoveButton.Size = new Size(360, 37);
             AnnouncementFormRemoveButton.TabIndex = 17;
+            AnnouncementFormRemoveButton.Click += RemoveAnnouncement;
             // 
             // AnnouncementFormCancelButton
             // 
@@ -878,6 +886,7 @@
             AnnouncementFormCancelButton.Name = "AnnouncementFormCancelButton";
             AnnouncementFormCancelButton.Size = new Size(164, 37);
             AnnouncementFormCancelButton.TabIndex = 18;
+            AnnouncementFormCancelButton.Click += CloseForm;
             // 
             // AnnouncementFormSaveButton
             // 
@@ -887,6 +896,7 @@
             AnnouncementFormSaveButton.Name = "AnnouncementFormSaveButton";
             AnnouncementFormSaveButton.Size = new Size(164, 37);
             AnnouncementFormSaveButton.TabIndex = 19;
+            AnnouncementFormSaveButton.Click += SaveAnnouncement;
             // 
             // CRUDForm
             // 
@@ -906,6 +916,7 @@
             DoubleBuffered = true;
             Font = new Font("Inter", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "CRUDForm";
@@ -913,8 +924,10 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "SocietySync Form";
             TopMost = true;
+            Load += CRUDForm_Loaded;
             SocietyForm.ResumeLayout(false);
             SocietyForm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)optionItemBindingSource).EndInit();
             SocietyApplication.ResumeLayout(false);
             SocietyApplication.PerformLayout();
             EventForm.ResumeLayout(false);
@@ -934,76 +947,77 @@
 
         #endregion
 
-        private Panel SocietyForm;
-        private Label SocietyFormNameLabel;
-        private TextBox SocietyFormNameInput;
-        private Label SocietyFormDescriptionLabel;
-        private TextBox SocietyFormDescriptionInput;
-        private Label SocietyFormPresidentLabel;
-        private ComboBox SocietyFormPresidentInput;
-        private Label SocietyFormRemoveButton;
-        private Label SocietyFormCancelButton;
-        private Label SocietyFormSaveButton;
-        private Panel SocietyApplication;
-        private Label SocietyApplicationSocietyLabel;
-        private TextBox SocietyApplicationSocietyInput;
-        private Label SocietyApplicationAdditionalNoteLabel;
-        private TextBox SocietyApplicationAdditionalNoteInput;
-        private Label SocietyApplicationCancelButton;
-        private Label SocietyApplicationApplyButton;
-        private Panel EventForm;
-        private Label EventFormTitleLabel;
-        private TextBox EventFormTitleInput;
-        private Label EventFormDescriptionLabel;
-        private TextBox EventFormDescriptionInput;
-        private Label EventFormCancelButton;
-        private Label EventFormSaveButton;
-        private TextBox EventFormStartDateInput;
-        private TextBox EventFormEndDateInput;
-        private Label EventFormRemoveButton;
-        private Label EventFormStartDateLabel;
-        private Label EventFormEndDateLabel;
-        private Label EventFormLocationLabel;
-        private TextBox EventFormLocationInput;
-        private Panel TeamForm;
-        private Label TeamFormNameLabel;
-        private TextBox TeamFormNameInput;
-        private Label TeamFormDescriptionLabel;
-        private TextBox TeamFormDescriptionInput;
-        private Label TeamFormHeadLabel;
-        private ComboBox TeamFormHeadInput;
-        private Label TeamFormRemoveButton;
-        private Label TeamFormCancelButton;
-        private Label TeamFormSaveButton;
-        private Panel TaskForm;
-        private Label TaskFormTitleLabel;
-        private TextBox TaskFormTitleInput;
-        private Label TaskFormDescriptionLabel;
-        private TextBox TaskFormDescriptionInput;
-        private Label TaskFormAssigneeLabel;
-        private ComboBox TaskFormAssigneeInput;
-        private Label TaskFormRemoveButton;
-        private Label TaskFormCancelButton;
-        private Label TaskFormSaveButton;
-        private Label TaskFormCompletedLabel;
-        private ComboBox TaskFormCompletedInput;
-        private Panel SocietyMemberForm;
-        private Label SocietyMemberFormRoleLabel;
-        private ComboBox SocietyMemberFormRoleInput;
-        private Label SocietyMemberFormRemoveButton;
-        private Label SocietyMemberFormCancelButton;
-        private Label SocietyMemberFormSaveButton;
-        private Panel TeamMemberForm;
-        private Label TeamMemberFormRoleLabel;
-        private ComboBox TeamMemberFormRoleInput;
-        private Label TeamMemberFormRemoveButton;
-        private Label TeamMemberFormCancelButton;
-        private Label TeamMemberFormSaveButton;
-        private Panel AnnouncementForm;
-        private Label AnnouncementFormTextLabel;
-        private TextBox AnnouncementFormTextInput;
-        private Label AnnouncementFormRemoveButton;
-        private Label AnnouncementFormCancelButton;
-        private Label AnnouncementFormSaveButton;
+        public Panel SocietyForm;
+        public Label SocietyFormNameLabel;
+        public TextBox SocietyFormNameInput;
+        public Label SocietyFormDescriptionLabel;
+        public TextBox SocietyFormDescriptionInput;
+        public Label SocietyFormPresidentLabel;
+        public ComboBox SocietyFormPresidentInput;
+        public Label SocietyFormRemoveButton;
+        public Label SocietyFormCancelButton;
+        public Label SocietyFormSaveButton;
+        public Panel SocietyApplication;
+        public Label SocietyApplicationSocietyLabel;
+        public TextBox SocietyApplicationSocietyInput;
+        public Label SocietyApplicationAdditionalNoteLabel;
+        public TextBox SocietyApplicationAdditionalNoteInput;
+        public Label SocietyApplicationCancelButton;
+        public Label SocietyApplicationApplyButton;
+        public Panel EventForm;
+        public Label EventFormTitleLabel;
+        public TextBox EventFormTitleInput;
+        public Label EventFormDescriptionLabel;
+        public TextBox EventFormDescriptionInput;
+        public Label EventFormCancelButton;
+        public Label EventFormSaveButton;
+        public Label EventFormRemoveButton;
+        public Label EventFormStartDateLabel;
+        public Label EventFormEndDateLabel;
+        public Label EventFormLocationLabel;
+        public TextBox EventFormLocationInput;
+        public Panel TeamForm;
+        public Label TeamFormNameLabel;
+        public TextBox TeamFormNameInput;
+        public Label TeamFormDescriptionLabel;
+        public TextBox TeamFormDescriptionInput;
+        public Label TeamFormHeadLabel;
+        public ComboBox TeamFormHeadInput;
+        public Label TeamFormRemoveButton;
+        public Label TeamFormCancelButton;
+        public Label TeamFormSaveButton;
+        public Panel TaskForm;
+        public Label TaskFormTitleLabel;
+        public TextBox TaskFormTitleInput;
+        public Label TaskFormDescriptionLabel;
+        public TextBox TaskFormDescriptionInput;
+        public Label TaskFormAssigneeLabel;
+        public ComboBox TaskFormAssigneeInput;
+        public Label TaskFormRemoveButton;
+        public Label TaskFormCancelButton;
+        public Label TaskFormSaveButton;
+        public Label TaskFormCompletedLabel;
+        public ComboBox TaskFormCompletedInput;
+        public Panel SocietyMemberForm;
+        public Label SocietyMemberFormRoleLabel;
+        public ComboBox SocietyMemberFormRoleInput;
+        public Label SocietyMemberFormRemoveButton;
+        public Label SocietyMemberFormCancelButton;
+        public Label SocietyMemberFormSaveButton;
+        public Panel TeamMemberForm;
+        public Label TeamMemberFormRoleLabel;
+        public ComboBox TeamMemberFormRoleInput;
+        public Label TeamMemberFormRemoveButton;
+        public Label TeamMemberFormCancelButton;
+        public Label TeamMemberFormSaveButton;
+        public Panel AnnouncementForm;
+        public Label AnnouncementFormTextLabel;
+        public TextBox AnnouncementFormTextInput;
+        public Label AnnouncementFormRemoveButton;
+        public Label AnnouncementFormCancelButton;
+        public Label AnnouncementFormSaveButton;
+        public BindingSource optionItemBindingSource;
+        private DateTimePicker EventFormStartDateInput;
+        private DateTimePicker EventFormEndDateInput;
     }
 }

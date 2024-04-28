@@ -77,9 +77,9 @@
             AutoScaleDimensions = new SizeF(8F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            Controls.Add(TemplateSocietySettingsButton);
             Controls.Add(TemplateSocietyPicture);
             Controls.Add(TemplateSocietyLabel);
-            Controls.Add(TemplateSocietySettingsButton);
             Cursor = Cursors.Hand;
             Font = new Font("Inter", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(3, 2, 3, 2);

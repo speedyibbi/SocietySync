@@ -85,10 +85,12 @@ CREATE TABLE Tasks (
 CREATE TABLE Announcements (
   announcement_id INT PRIMARY KEY IDENTITY(1,1),
   user_id INT FOREIGN KEY REFERENCES Users(user_id) ON DELETE SET NULL,
-  event_id INT FOREIGN KEY REFERENCES Events(event_id) ON DELETE SET NULL,
+  society_id INT FOREIGN KEY REFERENCES Societies(society_id) ON DELETE SET NULL,
+  event_id INT FOREIGN KEY REFERENCES Events(event_id),
   text TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_announcement_user FOREIGN KEY (user_id) REFERENCES Users(user_id),
+  CONSTRAINT fk_announcement_society FOREIGN KEY (society_id) REFERENCES Societies(society_id),
   CONSTRAINT fk_announcement_event FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
 
@@ -99,19 +101,24 @@ UPDATE Users
 SET admin = 1
 WHERE user_id = 1;
 
+SELECT * FROM UserRoles;
+INSERT INTO UserRoles (name, description) VALUES ('President', 'Highest level executive in a society.');
+INSERT INTO UserRoles (name, description) VALUES ('Executive', 'Division head in a society.');
+INSERT INTO UserRoles (name, description) VALUES ('Member', 'Part of a society.');
+INSERT INTO UserRoles (name, description) VALUES ('Head', 'Team lead in an event.');
+INSERT INTO UserRoles (name, description) VALUES ('Pending', 'Unofficial part of a society.');
+
+SELECT * FROM Memberships;
+DELETE FROM Memberships;
+
 SELECT * FROM Societies;
 DELETE FROM Societies;
 
+SELECT * FROM Events;
+DELETE FROM Events;
+
 SELECT * FROM Announcements;
 DELETE FROM Announcements;
-
-SELECT Users.first_name, Users.last_name, Societies.name, Announcements.text, Announcements.created_at
-FROM Announcements
-JOIN Users ON Announcements.user_id = Users.user_id
-JOIN Events ON Announcements.event_id = Events.event_id
-JOIN Societies ON Events.society_id = Societies.society_id
-JOIN Memberships ON Societies.society_id = Memberships.society_id
-WHERE Memberships.user_id = 1;
 
 DROP TABLE Teams;
 DROP TABLE TeamMembers;
